@@ -79,12 +79,16 @@ src/
 
 ---
 
-## 🤝 Como Contribuir
+## 🤝 Como Contribuir e Gestão de Tarefas
 
-Para manter a qualidade e rastreabilidade do projeto, consulte o nosso [**Guia de Contribuição (CONTRIBUTING.md)**](CONTRIBUTING.md) antes de enviar alterações. Ele contém:
-* Convenções de branches (`feat/*`, `fix/*`, `docs/*`)
-* Padrão de [Conventional Commits](https://www.conventionalcommits.org/)
-* Checklist de Pull Request
+* 📌 **Quadro de Tarefas & Roadmap**: [**GitHub Projects - Ohara Back-End**](https://github.com/orgs/OharaTeam/projects/1)
+* 📖 Para manter a qualidade e rastreabilidade do projeto, consulte o nosso [**Guia de Contribuição (CONTRIBUTING.md)**](CONTRIBUTING.md) antes de enviar alterações. Ele contém:
+  * Guia passo a passo para iniciantes (do card ao Pull Request)
+  * Regras obrigatórias de sanitização de branches (evitando acentos e caracteres especiais)
+  * Convenções de branches (`feat/*`, `fix/*`, `docs/*`)
+  * Padrão de [Conventional Commits](https://www.conventionalcommits.org/)
+  * Regra de governança de aprovação manual para a branch `main`
+
 
 ---
 
