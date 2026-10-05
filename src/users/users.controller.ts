@@ -4,21 +4,22 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { UpdateSteamShowcaseDto } from './dto/update-steam-showcase.dto';
 import { AddSteamLinkDto } from './dto/add-steam-link.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   // Rota: GET /users/me
   // Retorna: Dados completos do usuário logado
-  @ApiBearerAuth() // Ativa o cadeado do JWT para este endpoint
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obter dados do perfil logado' })
   @ApiResponse({ status: 200, description: 'Retorna o perfil completo, incluindo dados sensíveis.' })
+  @ApiResponse({ status: 401, description: 'Não autorizado: Token JWT ausente ou inválido.' })
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getMe(@Req() req) {
-    // req.user.id vem do Token JWT decodificado
     return this.usersService.getMe(req.user.id);
   }
 
@@ -26,10 +27,31 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar perfil do usuário' })
   @ApiResponse({ status: 200, description: 'Perfil atualizado com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autorizado: Token JWT ausente ou inválido.' })
   @UseGuards(JwtAuthGuard)
   @Patch('me')
   async updateProfile(@Req() req, @Body() updateProfileDto: UpdateProfileDto) {
     return this.usersService.updateProfile(req.user.id, updateProfileDto);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Adiciona/Atualiza o link da Steam no perfil' })
+  @ApiResponse({ status: 200, description: 'Steam vinculada com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autorizado: Token JWT ausente ou inválido.' })
+  @UseGuards(JwtAuthGuard)
+  @Put('me/steam/add')
+  async putSteamProfile(@Req() req, @Body() body: AddSteamLinkDto) {
+    return this.usersService.putSteamProfile(req.user.id, body.steamUrl);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Atualizar vitrine da Steam do usuário logado' })
+  @ApiResponse({ status: 200, description: 'Vitrine atualizada com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autorizado: Token JWT ausente ou inválido.' })
+  @UseGuards(JwtAuthGuard)
+  @Patch('me/steam/showcase')
+  async updateSteamShowcase(@Req() req, @Body() body: UpdateSteamShowcaseDto) {
+    return this.usersService.updateSteamShowcase(req.user.id, body.games);
   }
 
   @ApiOperation({ summary: 'Buscar perfil público (perfil do site) por Discord ID' })
@@ -39,15 +61,6 @@ export class UsersController {
   @Get(':discordId')
   async getPublicProfile(@Param('discordId') discordId: string) {
     return this.usersService.findPublicProfile(discordId);
-  }
-
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Adiciona/Atualiza apenas o link da Steam no perfil' })
-  @ApiResponse({ status: 200, description: 'Steam vinculada com sucesso.' })
-  @UseGuards(JwtAuthGuard)
-  @Put('me/steam/add')
-  async putSteamProfile(@Req() req, @Body() body: AddSteamLinkDto) {
-    return this.usersService.putSteamProfile(req.user.id, body.steamUrl);
   }
 
   @ApiOperation({ summary: 'Buscar resumo da Steam por Discord ID' })
@@ -66,14 +79,5 @@ export class UsersController {
   @Get(':discordId/steam/games')
   async getOwnedGames(@Param('discordId') discordId: string) {
     return this.usersService.getOwnedGames(discordId);
-  }
-
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Atualizar vitrine da Steam do usuário logado' })
-  @ApiResponse({ status: 200, description: 'Vitrine atualizada com sucesso.' })
-  @UseGuards(JwtAuthGuard)
-  @Patch('me/steam/showcase')
-  async updateSteamShowcase(@Req() req, @Body() body: UpdateSteamShowcaseDto) {
-    return this.usersService.updateSteamShowcase(req.user.id, body.games);
   }
 }

@@ -53,11 +53,13 @@ export class UpdateProfileDto {
   @Type(() => SocialLinksDto)
   socialLinks?: SocialLinksDto;
 
+  @ApiPropertyOptional({ description: 'Identificador do tema/avatar customizado do site', example: 'dracula' })
   @IsOptional()
   @IsString()
   @Transform(({ value }) => value === "" ? null : value)
   AvatarSite?: string;
 
+  @ApiPropertyOptional({ description: 'Identificador do tema/banner customizado do site', example: 'dark' })
   @IsOptional()
   @IsString()
   @Transform(({ value }) => value === "" ? null : value)

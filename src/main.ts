@@ -10,11 +10,16 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Ohara API')
-    .setDescription('Descricao da API')
-    .setVersion('1.0')
-    .addApiKey({ type: 'apiKey', name: 'X-SITE-KEY', in: 'header' }, 'SITE_KEY')
-    .addApiKey({ type: 'apiKey', name: 'X-API-KEY', in: 'header' }, 'BOT_KEY')
-    .addBearerAuth()
+    .setDescription('API REST do ecossistema Ohara: núcleo de integração entre o Discord Bot, Frontend/Dashboard e banco de dados PostgreSQL.')
+    .setVersion('1.0.0')
+    .addApiKey({ type: 'apiKey', name: 'X-SITE-KEY', in: 'header', description: 'Chave de segurança de comunicação com o site/dashboard' }, 'SITE_KEY')
+    .addApiKey({ type: 'apiKey', name: 'X-API-KEY', in: 'header', description: 'Chave de segurança de comunicação com o Discord Bot' }, 'BOT_KEY')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT', description: 'Token de autenticação JWT obtido via /auth/exchange' })
+    .addTag('auth', 'Autenticação OAuth2 com Discord, troca de tokens e logout')
+    .addTag('membros', 'Sincronização do bot, busca e listagem paginada de membros')
+    .addTag('cargos', 'Sincronização de cargos e hierarquia de permissões do Discord')
+    .addTag('users', 'Perfis de usuários, vitrine Steam e dados públicos')
+    .addTag('postagens', 'Criação de postagens, feed comunitário e upload de imagens')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

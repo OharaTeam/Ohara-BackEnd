@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "project": "OharaBack-End",
+  "mode": "spec-driven",
+  "planningDir": ".planning",
+  "stack": {
+    "framework": "NestJS",
+    "language": "TypeScript",
+    "orm": "Prisma",
+    "database": "PostgreSQL",
+    "runtime": "Bun / Node.js"
+  }
+}

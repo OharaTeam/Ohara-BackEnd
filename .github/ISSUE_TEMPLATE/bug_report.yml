@@ -1,0 +1,42 @@
+name: "🐛 Relatório de Bug (Bug Report)"
+description: "Reportar um comportamento inesperado ou erro na API."
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por relatar um problema! Forneça detalhes suficientes para que possamos reproduzir.
+  - type: textarea
+    id: description
+    attributes:
+      label: "Descrição do Problema"
+      description: "Explique claramente o que aconteceu de errado."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "Passos para Reproduzir"
+      description: "Como reproduzir o erro? (ex: chamada de endpoint, payload utilizado)"
+      placeholder: |
+        1. Fazer requisição POST para '/...'
+        2. Enviar o cabeçalho '...'
+        3. Receber erro '...'
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Comportamento Esperado"
+      description: "O que deveria ter acontecido?"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs ou Stack Trace"
+      description: "Cole aqui os logs do terminal ou a resposta de erro retornada pela API."
+      render: shell
+    validations:
+      required: false

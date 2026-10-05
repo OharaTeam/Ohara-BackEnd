@@ -5,24 +5,36 @@ import { extname } from 'path';
 import * as fs from 'fs';
 import { PostagensService } from './postagens.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ApiBody, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 
+@ApiTags('postagens')
 @Controller('postagens')
 export class PostagensController {
     private readonly logger = new Logger(PostagensController.name);
     constructor(private readonly postagensService: PostagensService) { }
 
     @Get()
-    @ApiQuery({ name: 'page', description: 'Página a ser listada', required: false })
-    @ApiQuery({ name: 'limit', description: 'Limite de itens por página', required: false })
+    @ApiOperation({
+        summary: 'Obter feed de postagens',
+        description: 'Retorna a lista paginada de postagens da comunidade com dados dos autores e contagem de comentários.',
+    })
+    @ApiQuery({ name: 'page', description: 'Página a ser listada', required: false, example: '1' })
+    @ApiQuery({ name: 'limit', description: 'Limite de itens por página', required: false, example: '5' })
+    @ApiResponse({ status: 200, description: 'Feed retornado com sucesso.' })
     getFeed(@Query('page') page: string = '1', @Query('limit') limit: string = '5') {
         this.logger.log(`Solicitação de feed recebida com paginação: ${page}, limite: ${limit}`);
         return this.postagensService.getFeed(page, limit);
     }
 
     @Get(':id')
-    @ApiQuery({ name: 'id', description: 'ID do post', required: true })
+    @ApiOperation({
+        summary: 'Buscar postagem por ID',
+        description: 'Retorna os detalhes completos de uma postagem, incluindo mídias, autor e comentários.',
+    })
+    @ApiParam({ name: 'id', description: 'ID (UUID) da postagem', required: true, example: '123e4567-e89b-12d3-a456-426614174000' })
+    @ApiResponse({ status: 200, description: 'Postagem encontrada com sucesso.' })
+    @ApiResponse({ status: 404, description: 'Postagem não encontrada.' })
     getPost(@Param('id') id: string) {
         this.logger.log(`Solicitada exibição do post: ${id}`);
         return this.postagensService.getPost(id);
@@ -30,7 +42,14 @@ export class PostagensController {
 
     @Post('create')
     @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary: 'Criar nova postagem',
+        description: 'Cria uma nova postagem associada ao autor autenticado via JWT.',
+    })
     @ApiBody({ type: CreatePostDto })
+    @ApiResponse({ status: 201, description: 'Postagem criada com sucesso.' })
+    @ApiResponse({ status: 401, description: 'Não autorizado: Token JWT ausente ou inválido.' })
     createPost(@Body() createPostDto: CreatePostDto) {
         this.logger.log(`Solicitação de criação de post recebida por ${createPostDto.discordId}`);
         this.logger.log(`Dados do post: ${createPostDto}`)
@@ -39,6 +58,29 @@ export class PostagensController {
 
     @Post('upload')
     @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary: 'Upload de imagens para postagens',
+        description: 'Permite o envio de até 5 imagens locais e retorna seus links públicos gerados.',
+    })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: 'Arquivos de imagem para upload (limite de 5 arquivos)',
+        schema: {
+            type: 'object',
+            properties: {
+                arquivos: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        format: 'binary',
+                    },
+                },
+            },
+        },
+    })
+    @ApiResponse({ status: 201, description: 'Imagens enviadas com sucesso e URLs retornadas.' })
+    @ApiResponse({ status: 401, description: 'Não autorizado: Token JWT ausente ou inválido.' })
     @UseInterceptors(FilesInterceptor('arquivos', 5, {
         storage: diskStorage({
             destination: (req, file, cb) => {

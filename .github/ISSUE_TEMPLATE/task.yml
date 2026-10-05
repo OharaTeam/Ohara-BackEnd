@@ -1,0 +1,45 @@
+name: "📋 Tarefa do Roadmap (Task)"
+description: "Tarefa técnica de engenharia derivada do roadmap do projeto."
+title: "[TASK]: "
+labels: ["task", "backend"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por registrar esta tarefa de engenharia! Certifique-se de vincular ao marco/fase correta do Roadmap.
+  - type: input
+    id: phase
+    attributes:
+      label: "Fase do Roadmap"
+      description: "Qual fase do Roadmap esta tarefa pertence? (ex: Fase 3, Fase 4)"
+      placeholder: "Fase 3: Módulos do Schema"
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: "Contexto e Objetivo"
+      description: "Explique o que precisa ser feito e por que."
+      placeholder: "Implementar o CRUD de comentários nas postagens para permitir interação entre os membros."
+    validations:
+      required: true
+  - type: textarea
+    id: affected-files
+    attributes:
+      label: "Arquivos e Módulos Afetados"
+      description: "Liste os módulos, controllers, services ou schemas envolvidos."
+      placeholder: "- src/postagens/\n- prisma/schema.prisma\n- src/postagens/dto/"
+    validations:
+      required: false
+  - type: textarea
+    id: dod
+    attributes:
+      label: "Critérios de Aceite (Definition of Done)"
+      description: "Liste as condições para que esta tarefa seja considerada concluída."
+      value: |
+        - [ ] DTOs tipados com class-validator e Swagger decorators
+        - [ ] Endpoints implementados e protegidos com os Guards adequados
+        - [ ] Documentação OpenAPI / Swagger atualizada
+        - [ ] Build e Lint passando sem erros (`bun run build`)
+    validations:
+      required: true
