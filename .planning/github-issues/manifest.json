@@ -1,0 +1,162 @@
+[
+  {
+    "id": "TASK-01",
+    "file": "01-feat-comentarios-post.md",
+    "github_issue": 1,
+    "title": "feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios",
+    "phase": "phase: 3-schema",
+    "milestone": "Fase 3: Módulos do Schema",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 3-schema", "backend", "task"]
+  },
+  {
+    "id": "TASK-02",
+    "file": "02-feat-comentarios-get.md",
+    "github_issue": null,
+    "title": "feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios",
+    "phase": "phase: 3-schema",
+    "milestone": "Fase 3: Módulos do Schema",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 3-schema", "backend", "task"]
+  },
+  {
+    "id": "TASK-03",
+    "file": "03-feat-comentarios-delete.md",
+    "github_issue": null,
+    "title": "feat(comentarios): implementar exclusão com permissão DELETE /postagens/:id/comentarios/:commentId",
+    "phase": "phase: 3-schema",
+    "milestone": "Fase 3: Módulos do Schema",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 3-schema", "backend", "task"]
+  },
+  {
+    "id": "TASK-04",
+    "file": "04-feat-eventos-create-list.md",
+    "github_issue": 2,
+    "title": "feat(eventos): criar módulo, DTOs e endpoints de criação e listagem de eventos",
+    "phase": "phase: 3-schema",
+    "milestone": "Fase 3: Módulos do Schema",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 3-schema", "backend", "task"]
+  },
+  {
+    "id": "TASK-05",
+    "file": "05-feat-eventos-crud-details.md",
+    "github_issue": null,
+    "title": "feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos",
+    "phase": "phase: 3-schema",
+    "milestone": "Fase 3: Módulos do Schema",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 3-schema", "backend", "task"]
+  },
+  {
+    "id": "TASK-06",
+    "file": "06-feat-eventos-feed-link.md",
+    "github_issue": null,
+    "title": "feat(eventos): vincular eventos às postagens do feed Ohara",
+    "phase": "phase: 3-schema",
+    "milestone": "Fase 3: Módulos do Schema",
+    "priority": "priority: p3-baixa",
+    "labels": ["priority: p3-baixa", "phase: 3-schema", "backend", "task"]
+  },
+  {
+    "id": "TASK-07",
+    "file": "07-test-unit-auth-guards.md",
+    "github_issue": null,
+    "title": "test(unit): criar testes unitários para AuthService e Guards",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 4-testes-seguranca", "testing", "backend", "task"]
+  },
+  {
+    "id": "TASK-08",
+    "file": "08-test-unit-membros-cargos.md",
+    "github_issue": 4,
+    "title": "test(unit): criar testes unitários para MembrosService e CargosService",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 4-testes-seguranca", "testing", "backend", "task"]
+  },
+  {
+    "id": "TASK-09",
+    "file": "09-test-unit-postagens-users.md",
+    "github_issue": null,
+    "title": "test(unit): criar testes unitários para PostagensService e UsersService",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 4-testes-seguranca", "testing", "backend", "task"]
+  },
+  {
+    "id": "TASK-10",
+    "file": "10-test-e2e-auth-users.md",
+    "github_issue": 5,
+    "title": "test(e2e): estruturar ambiente de testes e criar suíte E2E para Auth e Users",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 4-testes-seguranca", "testing", "backend", "task"]
+  },
+  {
+    "id": "TASK-11",
+    "file": "11-test-e2e-postagens-comentarios.md",
+    "github_issue": null,
+    "title": "test(e2e): criar testes de integração E2E para Postagens e Comentários",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 4-testes-seguranca", "testing", "backend", "task"]
+  },
+  {
+    "id": "TASK-12",
+    "file": "12-feat-security-blacklist-service.md",
+    "github_issue": 6,
+    "title": "feat(security): implementar serviço de Blacklist de tokens JWT para logout",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 4-testes-seguranca", "security", "backend", "task"]
+  },
+  {
+    "id": "TASK-13",
+    "file": "13-feat-security-blacklist-guard.md",
+    "github_issue": null,
+    "title": "feat(security): integrar verificação de blacklist no JwtAuthGuard e endpoint de logout",
+    "phase": "phase: 4-testes-seguranca",
+    "milestone": "Fase 4: Testes & Segurança",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 4-testes-seguranca", "security", "backend", "task"]
+  },
+  {
+    "id": "TASK-14",
+    "file": "14-ci-github-actions.md",
+    "github_issue": 7,
+    "title": "ci(actions): configurar pipeline de integração contínua (CI) no GitHub Actions",
+    "phase": "phase: 5-devops-observabilidade",
+    "milestone": "Fase 5: CI/CD & Observabilidade",
+    "priority": "priority: p1-alta",
+    "labels": ["priority: p1-alta", "phase: 5-devops-observabilidade", "ci/cd", "devops", "task"]
+  },
+  {
+    "id": "TASK-15",
+    "file": "15-feat-observability-interceptor.md",
+    "github_issue": 8,
+    "title": "feat(observability): criar interceptor global de logging e filtro padronizado de exceções",
+    "phase": "phase: 5-devops-observabilidade",
+    "milestone": "Fase 5: CI/CD & Observabilidade",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 5-devops-observabilidade", "observability", "backend", "task"]
+  },
+  {
+    "id": "TASK-16",
+    "file": "16-feat-healthcheck-terminus.md",
+    "github_issue": 9,
+    "title": "feat(health): implementar endpoints de healthcheck com @nestjs/terminus",
+    "phase": "phase: 5-devops-observabilidade",
+    "milestone": "Fase 5: CI/CD & Observabilidade",
+    "priority": "priority: p2-media",
+    "labels": ["priority: p2-media", "phase: 5-devops-observabilidade", "observability", "backend", "task"]
+  }
+]
