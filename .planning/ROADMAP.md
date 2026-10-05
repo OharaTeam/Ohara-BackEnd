@@ -35,24 +35,24 @@
 
 ---
 
-### 📍 Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub (Foco Atual 🚀)
+### 📍 Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub (Concluída ✅)
 **Objetivo**: Alinhar o repositório para colaboração em equipe, documentar ambiente de setup, padronizar contribuição e quebrar o roadmap em micro-tasks automatizáveis como GitHub Issues e GitHub Projects.
 
-- [ ] **Onboarding & Setup de Desenvolvimento**:
-  - Criação de `.env.example` exaustivo com descrição de cada variável (Discord, JWT, DB, Steam, Ports).
-  - Documentação de setup local no `README.md` (rodar com Docker, migrações Prisma, seed inicial).
-- [ ] **Governança do Repositório & Guias de Contribuição**:
-  - `CONTRIBUTING.md` com fluxo de trabalho (Git Flow / branches `feat/`, `fix/`), Conventional Commits e checklist de PR.
-  - `.github/pull_request_template.md` com checklist de qualidade (testes, docs, breaking changes).
-  - `.github/ISSUE_TEMPLATE/` (templates estruturados para Bug Report, Feature Request e Task).
-- [ ] **Decomposição do Roadmap em Issues do GitHub**:
-  - Especificação detalhada de cada micro-task das Fases 3, 4 e 5.
-  - Formato padronizado de issues (Título, Contexto, Arquivos Afetados, Critérios de Aceite - DoD, Labels, Milestone).
-  - Automação / Script para sincronizar e criar as issues no GitHub via GitHub CLI (`gh issue create`) ou GitHub Projects API.
+- [x] **Onboarding & Setup de Desenvolvimento**:
+  - [x] Criação de `.env.example` exaustivo com descrição de cada variável (Discord, JWT, DB, Steam, Evolution API, Ports).
+  - [x] Documentação de setup local no `README.md` (rodar com Docker, migrações Prisma, Bun).
+- [x] **Governança do Repositório & Guias de Contribuição**:
+  - [x] `CONTRIBUTING.md` com fluxo de trabalho (Git Flow / branches `feat/`, `fix/`), Conventional Commits e checklist de PR.
+  - [x] `.github/pull_request_template.md` com checklist de qualidade (testes, docs, breaking changes).
+  - [x] `.github/ISSUE_TEMPLATE/` (templates estruturados para Bug Report, Feature Request e Task).
+- [x] **Decomposição do Roadmap em Issues do GitHub**:
+  - [x] Especificação detalhada de 9 micro-tasks das Fases 3, 4 e 5 em `.planning/github-issues/`.
+  - [x] Formato padronizado de issues (Título, Contexto, Arquivos Afetados, DoD, Labels, Milestone).
+  - [x] Script de automação `scripts/create-github-issues.sh` para sincronizar e criar as issues no GitHub via GitHub CLI (`gh`).
 
 ---
 
-### 📍 Fase 3: Implementação dos Módulos Faltantes do Schema
+### 📍 Fase 3: Implementação dos Módulos Faltantes do Schema (Foco Atual 🚀)
 **Objetivo**: Desenvolver os domínios mapeados no `prisma/schema.prisma` que ainda não possuem endpoints REST implementados.
 
 - [ ] **Módulo de Comentários** (`src/comentarios` ou sub-módulo de `postagens`):

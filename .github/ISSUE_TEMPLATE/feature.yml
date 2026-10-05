@@ -1,0 +1,32 @@
+name: "🚀 Sugestão de Funcionalidade (Feature)"
+description: "Propor uma nova funcionalidade ou melhoria para o OharaBack-End."
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por sugerir uma melhoria para o OharaBack-End!
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problema ou Oportunidade"
+      description: "Qual problema esta funcionalidade resolve ou qual melhoria ela proporciona?"
+      placeholder: "Atualmente, não é possível..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Solução Proposta"
+      description: "Como você imagina o funcionamento desta feature?"
+      placeholder: "Criar um endpoint GET /..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternativas Consideradas"
+      description: "Quais outras alternativas ou soluções parciais foram pensadas?"
+    validations:
+      required: false

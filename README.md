@@ -1,40 +1,92 @@
 # OharaBack-End (NestJS)
 
-O OharaBack-End é uma API REST robusta desenvolvida com o framework NestJS. Este projeto serve como o núcleo de processamento de dados para o ecossistema "Ohara", gerenciando a integração entre o bot do Discord, o banco de dados e o frontend da aplicação.
+O **OharaBack-End** é a API REST central desenvolvida em [NestJS](https://nestjs.com/) para o ecossistema **Ohara**. Este projeto atua como o núcleo de processamento e persistência de dados, orquestrando a comunicação entre o **Bot do Discord**, o **Frontend Web (Dashboard)** e o banco de dados relacional **PostgreSQL**.
 
-Documentação Swagger: https://ohara-back-end.vercel.app/api-docs
+📖 **Documentação Swagger (Local)**: http://localhost:3000/api-docs
+
+---
 
 ## 🚀 Tecnologias Utilizadas
-- NestJS: Framework Node.js para construção de aplicativos escaláveis e eficientes.
 
-- Prisma: ORM moderno para Node.js e TypeScript.
+* **Framework**: [NestJS 11](https://nestjs.com/)
+* **Runtime & Package Manager**: [Bun](https://bun.sh/) e Node.js
+* **ORM**: [Prisma 7](https://www.prisma.io/) com PostgreSQL
+* **Banco de Dados**: PostgreSQL (gerenciado via Docker Compose)
+* **Autenticação**: Passport.js (Discord OAuth2, JWT e API Keys M2M)
+* **Segurança**: Helmet e NestJS Throttler (rate limiting)
+* **Validação**: Class-Validator e Class-Transformer
+* **Integrações**: Steam Web API e Evolution API (WhatsApp)
 
-- PostgreSQL: Banco de dados relacional (gerenciado via Docker).
+---
 
-- TypeScript: Linguagem principal do projeto.
+## ⚡ Começando Rápido (Guia do Desenvolvedor)
 
-- Passport.js: Gerenciamento de autenticação (JWT e Discord OAuth2).
+### Pré-requisitos
+* [Bun](https://bun.sh/) (recomendado) ou [Node.js](https://nodejs.org/) (versão >= 22)
+* [Docker](https://www.docker.com/) e Docker Compose
+* Git
 
-- Docker: Containerização do banco de dados e ambiente.
+### Passo a Passo
 
-## 🏗️ Estrutura do Projeto
-A API segue os padrões de módulos do NestJS:
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/OharaTeam/Ohara-BackEnd.git
+   cd Ohara-BackEnd
+   ```
 
-- src/auth: Gerenciamento de segurança, incluindo estratégias de JWT, Discord e guards (como bot-key.guard.ts e site-key.guard.ts).
+2. **Instale as dependências**:
+   ```bash
+   bun install
+   ```
 
-- src/membros: CRUD e lógica de negócio para os membros do servidor.
+3. **Configure as variáveis de ambiente**:
+   ```bash
+   cp .env.example .env
+   ```
+   *Edite o arquivo `.env` preenchendo as chaves do Discord, banco e segurança.*
 
-- src/cargos: Gestão de cargos e atribuições.
+4. **Inicie o banco PostgreSQL via Docker**:
+   ```bash
+   docker compose up -d postgres
+   ```
 
-- prisma/: Esquemas de banco de dados e migrações.
+5. **Rode as migrações do Prisma**:
+   ```bash
+   bunx prisma migrate dev
+   bunx prisma generate
+   ```
 
-## 🔒 Autenticação
-A API implementa múltiplas camadas de segurança:
-- Discord OAuth2: Para autenticação de usuários via dashboard.
+6. **Inicie o servidor de desenvolvimento**:
+   ```bash
+   bun run start:dev
+   ```
+   Acesse a documentação interativa em http://localhost:3000/api-docs.
 
-- JWT: Para manter sessões seguras no frontend.
+---
 
-- API Keys: Para validar a comunicação vinda especificamente do bot ou do site.
+## 🏗️ Estrutura de Módulos
+
+```
+src/
+├── auth/          # Autenticação Discord OAuth2, JWT exchange e Guards (BotKeyGuard, SiteKeyGuard)
+├── membros/       # Sincronização em lote, busca e listagem paginada de membros
+├── cargos/        # Sincronização de cargos e hierarquia de permissões do Discord
+├── users/         # Gestão de perfis públicos/privados, vitrine e integração com a Steam
+├── postagens/     # Feed da comunidade, criação de posts e upload de mídias
+├── prisma/        # Serviço de conexão do Prisma ORM
+└── main.ts        # Bootstrap, Swagger, Helmet, CORS e pipes globais
+```
+
+---
+
+## 🤝 Como Contribuir
+
+Para manter a qualidade e rastreabilidade do projeto, consulte o nosso [**Guia de Contribuição (CONTRIBUTING.md)**](CONTRIBUTING.md) antes de enviar alterações. Ele contém:
+* Convenções de branches (`feat/*`, `fix/*`, `docs/*`)
+* Padrão de [Conventional Commits](https://www.conventionalcommits.org/)
+* Checklist de Pull Request
+
+---
 
 ## 📄 Licença
 Este projeto está sob a licença MIT.

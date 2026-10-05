@@ -17,10 +17,10 @@
 | **REQ-POST-02** | Postagens | Feed paginado e busca de post por ID | ✅ Concluído | Fase 1 |
 | **REQ-POST-03** | Uploads | Upload de até 5 imagens locais por requisição com URL pública gerada | ✅ Concluído | Fase 1 |
 | **REQ-DOCS-01** | Documentação | Swagger / OpenAPI completo com DTOs, schemas de resposta e autenticação documentada | ✅ Concluído | Fase 1 |
-| **REQ-TEAM-01** | Colaboração | Criação de `.env.example` documentado e guia de setup local no `README.md` | ⏳ Pendente | Fase 2 |
-| **REQ-TEAM-02** | Governança | Criação de `CONTRIBUTING.md` e convenções de Git Flow / Conventional Commits | ⏳ Pendente | Fase 2 |
-| **REQ-TEAM-03** | GitHub Templates | Templates de PR e Issues estruturados em `.github/` para bugs, features e tasks | ⏳ Pendente | Fase 2 |
-| **REQ-TEAM-04** | Automação Roadmap | Decomposição das fases seguintes em micro-tasks e script/templates prontos para GitHub Issues | ⏳ Pendente | Fase 2 |
+| **REQ-TEAM-01** | Colaboração | Criação de `.env.example` documentado e guia de setup local no `README.md` | ✅ Concluído | Fase 2 |
+| **REQ-TEAM-02** | Governança | Criação de `CONTRIBUTING.md` e convenções de Git Flow / Conventional Commits | ✅ Concluído | Fase 2 |
+| **REQ-TEAM-03** | GitHub Templates | Templates de PR e Issues estruturados em `.github/` para bugs, features e tasks | ✅ Concluído | Fase 2 |
+| **REQ-TEAM-04** | Automação Roadmap | Decomposição das fases seguintes em micro-tasks e script/templates prontos para GitHub Issues | ✅ Concluído | Fase 2 |
 | **REQ-POST-04** | Comentários | Criação, listagem e remoção de comentários em posts (`Comment` model) | 🟡 Parcial (Schema pronto) | Fase 3 |
 | **REQ-EVNT-01** | Eventos | CRUD de Eventos Ohara (`OharaEventos` no schema) e vinculação a posts | 🟡 Parcial (Schema pronto) | Fase 3 |
 | **REQ-MC-01** | Minecraft / Cobblemon | Endpoints para vincular `ContaMinecraft` ao Membro e consultar `PokemonsCapturados` | 🟡 Parcial (Schema pronto) | Fase 3 |
