@@ -66,3 +66,7 @@ HANDOFF.json
 .planning/**/HANDOFF.json
 .planning/**/.continue-here.md
 .planning/**/*-CHECKPOINT.json
+
+# Scripts de automacao locais (nao versionar scripts de issues/sincronizacao)
+/scripts
+

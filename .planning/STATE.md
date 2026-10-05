@@ -24,14 +24,14 @@
     - Limpeza dos corpos das issues (sem títulos redundantes nem blocos soltos de frontmatter).
     - Metadados e versionamento centralizados em [`.planning/github-issues/manifest.json`](file:///home/caetano/OharaBack-End--NestJS-/.planning/github-issues/manifest.json).
     - Ordem de prioridade padronizada via labels (`priority: p1-alta`, `priority: p2-media`, `priority: p3-baixa`).
-    - Script seguro [`scripts/sync-roadmap-issues.sh`](file:///home/caetano/OharaBack-End--NestJS-/scripts/sync-roadmap-issues.sh) com `--dry-run` por padrão, confirmação explícita (`--execute`) e sincronização direta no GitHub Projects.
+    - Prevenção contra execuções acidentais: scripts de aplicação/sincronização de issues não são versionados no repositório (protegidos via `.gitignore`).
     - Minecraft & Cobblemon movido para backlog futuro para planejamento dedicado.
 
 ---
 
 ## 🚀 Próximas Ações Imediatas (Fase 3)
 
-1. Sincronizar o backlog no GitHub Projects via `bash scripts/sync-roadmap-issues.sh --execute`.
+1. Acompanhar e sinalizar tarefas no [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1).
 2. Desenvolvedores novatos escolhem e se atribuem às tarefas da Fase 3:
    - **TASK-01**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` (🔴 `priority: p1-alta`)
    - **TASK-02**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios` (🔴 `priority: p1-alta`)

@@ -55,7 +55,7 @@
   - [x] Remoção de títulos redundantes do corpo das issues e separação limpa de metadados em `manifest.json`.
   - [x] Taxonomia de prioridades com labels categorizadas (`priority: p1-alta`, `priority: p2-media`, `priority: p3-baixa`).
   - [x] Criação e vinculação do quadro [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1).
-  - [x] Script seguro `scripts/sync-roadmap-issues.sh` com proteção contra execuções acidentais (`--dry-run` por padrão) e prevenção de issues duplicadas.
+  - [x] Prevenção de execuções acidentais: scripts de aplicação de issues não são versionados no repositório (protegidos via `.gitignore`) para evitar disparos indevidos ou duplicados.
 
 ---
 
