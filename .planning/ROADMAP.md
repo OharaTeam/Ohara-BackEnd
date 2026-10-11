@@ -64,12 +64,12 @@
 
 - [ ] **Módulo de Comentários** (Submódulo em `src/postagens` ou `src/comentarios`):
   - [x] **TASK-01**: Modelagem de DTOs e endpoint de criação `POST /postagens/:id/comentarios` [🔴 `priority: p1-alta`]
-  - [ ] **TASK-02**: Implementar listagem paginada `GET /postagens/:id/comentarios` com dados do autor [🔴 `priority: p1-alta`]
+  - [ ] **TASK-02**: Implementar listagem paginada `GET /postagens/:id/comentarios` com dados do autor e alinhar `getPost` com `_count.comentarios` [🔴 `priority: p1-alta`]
   - [ ] **TASK-03**: Implementar exclusão com controle de autor/admin `DELETE /postagens/:id/comentarios/:commentId` [🟡 `priority: p2-media`]
 - [ ] **Módulo de Eventos Ohara** (`src/eventos`):
-  - [ ] **TASK-04**: Estruturar módulo, DTOs e endpoints de criação e listagem `POST /eventos` e `GET /eventos` [🔴 `priority: p1-alta`]
+  - [ ] **TASK-04**: Estruturar módulo, DTOs e endpoint `POST /eventos` integrado atomicamente ao feed (`Posts`) via transação Prisma, com agenda `GET /eventos` [🔴 `priority: p1-alta`]
   - [ ] **TASK-05**: Implementar endpoints de detalhes, atualização e cancelamento `GET/PATCH/DELETE /eventos/:id` [🟡 `priority: p2-media`]
-  - [ ] **TASK-06**: Vincular eventos às postagens do feed da comunidade Ohara [🟢 `priority: p3-baixa`]
+  - [ ] **TASK-06**: Enriquecer exibição e filtros de eventos no `getFeed` de postagens [🟢 `priority: p3-baixa`]
 
 > [!NOTE]
 > **Item Movido para Backlog Futuro**: A integração do **Módulo Minecraft & Cobblemon** (`ContaMinecraft`, `PokemonsCapturados`) possui complexidade de autenticação entre servidores (M2M) e sincronização de eventos de jogo, portanto seu planejamento detalhado e implementação serão realizados em uma etapa posterior dedicada.

@@ -5,9 +5,9 @@
 - **Milestone Ativo**: Milestone 1 - Fundação e Padronização Colaborativa
 - **Fase Concluída e Revisada**: [Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-2-padroniza%C3%A7%C3%A3o-colaborativa-onboarding--automa%C3%A7%C3%A3o-no-github-conclu%C3%ADda-e-revisada-) ✅
 - **Fase Atual**: [Fase 3: Implementação dos Módulos do Schema (Comentários & Eventos)](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-3-implementa%C3%A7%C3%A3o-dos-m%C3%B3dulos-do-schema-foco-atual-) 🚀
-- **Branch Git**: `1-featcomentarios-modelar-dtos-e-criar-endpoint-post-postagensidcomentarios`
+- **Branch Git**: `2-feateventos-criar-modulo-dtos-e-endpoints-de-criacao-e-listagem-de-eventos`
 - **Quadro Kanban**: [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1)
-- **Última Atualização**: 2026-10-10
+- **Última Atualização**: 2026-10-11
 
 ---
 
@@ -31,7 +31,17 @@
 
 ## 🚀 Próximas Ações Imediatas (Fase 3)
 
-1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído e testado nesta branch (`1-featcomentarios-modelar-dtos-e-criar-endpoint-post-postagensidcomentarios`).
-2. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios` (🔴 `priority: p1-alta`).
-3. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com controle de autor/admin DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
-4. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoints de criação e listagem de eventos` (🔴 `priority: p1-alta`).
+1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído, testado, mergeado na `main` via PR #20 e Issue #1 fechada. ✅
+2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` (🔴 `priority: p1-alta`) — Branch criada (`2-feateventos-criar-modulo-dtos-e-endpoints-de-criacao-e-listagem-de-eventos`) e pronta para implementação.
+3. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`).
+4. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com controle de autor/admin DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
+5. **TASK-05 (Issue #13)**: `feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos` (🟡 `priority: p2-media`).
+
+---
+
+## 🔁 Continuidade de Sessão
+
+- **Última Sessão**: 2026-10-11
+- **Status da Sessão**: Sessão retomada com sucesso. PR #20 integrado na `main`.
+- **Branch Ativa**: `2-feateventos-criar-modulo-dtos-e-endpoints-de-criacao-e-listagem-de-eventos`
+- **Próximo Alvo**: Início do módulo de eventos (TASK-04 / Issue #2) ou prosseguimento de comentários (TASK-02 / Issue #11).
