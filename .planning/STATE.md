@@ -5,9 +5,9 @@
 - **Milestone Ativo**: Milestone 1 - Fundação e Padronização Colaborativa
 - **Fase Concluída e Revisada**: [Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-2-padroniza%C3%A7%C3%A3o-colaborativa-onboarding--automa%C3%A7%C3%A3o-no-github-conclu%C3%ADda-e-revisada-) ✅
 - **Fase Atual**: [Fase 3: Implementação dos Módulos do Schema (Comentários & Eventos)](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-3-implementa%C3%A7%C3%A3o-dos-m%C3%B3dulos-do-schema-foco-atual-) 🚀
-- **Branch Git**: `feat--organizando-documentacao`
+- **Branch Git**: `1-featcomentarios-modelar-dtos-e-criar-endpoint-post-postagensidcomentarios`
 - **Quadro Kanban**: [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1)
-- **Última Atualização**: 2026-10-05
+- **Última Atualização**: 2026-10-10
 
 ---
 
@@ -31,8 +31,7 @@
 
 ## 🚀 Próximas Ações Imediatas (Fase 3)
 
-1. Acompanhar e sinalizar tarefas no [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1).
-2. Desenvolvedores novatos escolhem e se atribuem às tarefas da Fase 3:
-   - **TASK-01**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` (🔴 `priority: p1-alta`)
-   - **TASK-02**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios` (🔴 `priority: p1-alta`)
-   - **TASK-04**: `feat(eventos): criar módulo, DTOs e endpoints de criação e listagem de eventos` (🔴 `priority: p1-alta`)
+1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído e testado nesta branch (`1-featcomentarios-modelar-dtos-e-criar-endpoint-post-postagensidcomentarios`).
+2. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios` (🔴 `priority: p1-alta`).
+3. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com controle de autor/admin DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
+4. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoints de criação e listagem de eventos` (🔴 `priority: p1-alta`).

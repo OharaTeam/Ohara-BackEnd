@@ -63,7 +63,7 @@
 **Objetivo**: Desenvolver os domínios mapeados no `prisma/schema.prisma` que ainda não possuem endpoints REST implementados.
 
 - [ ] **Módulo de Comentários** (Submódulo em `src/postagens` ou `src/comentarios`):
-  - [ ] **TASK-01**: Modelagem de DTOs e endpoint de criação `POST /postagens/:id/comentarios` [🔴 `priority: p1-alta`]
+  - [x] **TASK-01**: Modelagem de DTOs e endpoint de criação `POST /postagens/:id/comentarios` [🔴 `priority: p1-alta`]
   - [ ] **TASK-02**: Implementar listagem paginada `GET /postagens/:id/comentarios` com dados do autor [🔴 `priority: p1-alta`]
   - [ ] **TASK-03**: Implementar exclusão com controle de autor/admin `DELETE /postagens/:id/comentarios/:commentId` [🟡 `priority: p2-media`]
 - [ ] **Módulo de Eventos Ohara** (`src/eventos`):
