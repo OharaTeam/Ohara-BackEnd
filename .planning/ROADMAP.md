@@ -67,7 +67,7 @@
   - [ ] **TASK-02**: Implementar listagem paginada `GET /postagens/:id/comentarios` com dados do autor e alinhar `getPost` com `_count.comentarios` [🔴 `priority: p1-alta`]
   - [ ] **TASK-03**: Implementar exclusão com controle de autor/admin `DELETE /postagens/:id/comentarios/:commentId` [🟡 `priority: p2-media`]
 - [ ] **Módulo de Eventos Ohara** (`src/eventos`):
-  - [ ] **TASK-04**: Estruturar módulo, DTOs e endpoint `POST /eventos` integrado atomicamente ao feed (`Posts`) via transação Prisma, com agenda `GET /eventos` [🔴 `priority: p1-alta`]
+  - [x] **TASK-04**: Estruturar módulo, DTOs e endpoint `POST /eventos` integrado atomicamente ao feed (`Posts`) via transação Prisma, com agenda `GET /eventos` [🔴 `priority: p1-alta`]
   - [ ] **TASK-05**: Implementar endpoints de detalhes, atualização e cancelamento `GET/PATCH/DELETE /eventos/:id` [🟡 `priority: p2-media`]
   - [ ] **TASK-06**: Enriquecer exibição e filtros de eventos no `getFeed` de postagens [🟢 `priority: p3-baixa`]
 
