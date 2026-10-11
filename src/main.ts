@@ -10,16 +10,52 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Ohara API')
-    .setDescription('API REST do ecossistema Ohara: núcleo de integração entre o Discord Bot, Frontend/Dashboard e banco de dados PostgreSQL.')
+    .setDescription(
+      'API REST do ecossistema Ohara: núcleo de integração entre o Discord Bot, Frontend/Dashboard e banco de dados PostgreSQL.',
+    )
     .setVersion('1.0.0')
-    .addApiKey({ type: 'apiKey', name: 'X-SITE-KEY', in: 'header', description: 'Chave de segurança de comunicação com o site/dashboard' }, 'SITE_KEY')
-    .addApiKey({ type: 'apiKey', name: 'X-API-KEY', in: 'header', description: 'Chave de segurança de comunicação com o Discord Bot' }, 'BOT_KEY')
-    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT', description: 'Token de autenticação JWT obtido via /auth/exchange' })
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'X-SITE-KEY',
+        in: 'header',
+        description: 'Chave de segurança de comunicação com o site/dashboard',
+      },
+      'SITE_KEY',
+    )
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'X-API-KEY',
+        in: 'header',
+        description: 'Chave de segurança de comunicação com o Discord Bot',
+      },
+      'BOT_KEY',
+    )
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      description: 'Token de autenticação JWT obtido via /auth/exchange',
+    })
     .addTag('auth', 'Autenticação OAuth2 com Discord, troca de tokens e logout')
-    .addTag('membros', 'Sincronização do bot, busca e listagem paginada de membros')
-    .addTag('cargos', 'Sincronização de cargos e hierarquia de permissões do Discord')
+    .addTag(
+      'membros',
+      'Sincronização do bot, busca e listagem paginada de membros',
+    )
+    .addTag(
+      'cargos',
+      'Sincronização de cargos e hierarquia de permissões do Discord',
+    )
     .addTag('users', 'Perfis de usuários, vitrine Steam e dados públicos')
-    .addTag('postagens', 'Criação de postagens, feed comunitário e upload de imagens')
+    .addTag(
+      'postagens',
+      'Criação de postagens, feed comunitário e upload de imagens',
+    )
+    .addTag(
+      'eventos',
+      'Criação de eventos, publicação no feed e agenda da comunidade',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -33,19 +69,28 @@ async function bootstrap() {
     customfavIcon: '/swagger-ui/favicon-32x32.png',
   });
 
-  app.use(helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" }
-  }));
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
   app.use(cookieParser());
 
-  app.useGlobalPipes(new ValidationPipe({
-    transform: true,
-    whitelist: true,
-    forbidNonWhitelisted: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
   app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3000', 'https://ohara-back-end.vercel.app', 'https://ohara-site.vercel.app'],
+    origin: [
+      'http://localhost:3001',
+      'http://localhost:3000',
+      'https://ohara-back-end.vercel.app',
+      'https://ohara-site.vercel.app',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
