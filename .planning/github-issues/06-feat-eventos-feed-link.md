@@ -1,22 +1,19 @@
 ### 📌 Contexto e Justificativa
-Eventos da comunidade Ohara devem poder ser destacados no feed principal por meio de postagens associadas, permitindo que a comunidade comente e interaja diretamente sobre o evento.
+Com a criação de eventos gerando automaticamente postagens vinculadas no feed (TASK-04), a listagem principal do feed (`GET /postagens`) precisa exibir adequadamente os dados dos eventos associados, permitindo que o frontend identifique posts do tipo evento e renderize badges, datas e informações de participação.
 
 ### 🎯 O que deve ser feito
-1. Atualizar o DTO de criação de postagens (`CreatePostDto`):
-   - Adicionar campo opcional `eventoId?: string` validando se o evento informado existe.
-2. Atualizar `PostagensService`:
-   - Ao criar uma postagem com `eventoId`, vincular a relação no Prisma.
-   - Ao consultar o feed (`GET /postagens`), incluir os dados resumidos do evento associado (`id`, `titulo`, `dataInicio`, `bannerUrl`).
-3. Adicionar documentação OpenAPI/Swagger no DTO e no controlador de postagens.
+1. Atualizar `getFeed` em `src/postagens/postagens.service.ts`:
+   - Enriquecer o `select` de `evento`: incluir `id`, `nomeEvento`, `tipoEvento`, `dataInicio`, `dataEncerramento`, `media`.
+2. Adicionar suporte a filtro opcional no feed (`GET /postagens`):
+   - Query param opcional `tipo?: 'todos' | 'posts' | 'eventos'` (ou filtro por `tipoEvento`).
+3. Documentar os novos campos e filtros no Swagger OpenAPI.
 
 ### 📂 Arquivos Afetados
-- `src/postagens/dto/create-post.dto.ts`
 - `src/postagens/postagens.service.ts`
 - `src/postagens/postagens.controller.ts`
 
 ### ✅ Critérios de Aceite (Definition of Done)
-- [ ] Postagem pode ser associada a um evento existente
-- [ ] Retorno `404 Not Found` caso o `eventoId` passado não exista
-- [ ] Feed retorna resumo do evento nas postagens vinculadas
-- [ ] Documentação Swagger atualizada
+- [ ] `getFeed` retorna metadados completos de evento quando a postagem for associada a um evento
+- [ ] Frontend consegue diferenciar visualmente postagens comuns de eventos no feed
+- [ ] Suporte a filtro por tipo no feed documentado no Swagger
 - [ ] Build do projeto passando (`bun run build`)
