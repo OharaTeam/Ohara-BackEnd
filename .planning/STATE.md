@@ -32,7 +32,7 @@
 ## 🚀 Próximas Ações Imediatas (Fase 3)
 
 1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído, testado, mergeado na `main` via PR #20 e Issue #1 fechada. ✅
-2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` (🔴 `priority: p1-alta`) — Branch criada (`2-feateventos-criar-modulo-dtos-e-endpoints-de-criacao-e-listagem-de-eventos`) e pronta para implementação.
+2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` (🔴 `priority: p1-alta`) — Implementado com 16 testes unitários e PR #22 aberto no GitHub. ✅
 3. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`).
 4. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com controle de autor/admin DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
 5. **TASK-05 (Issue #13)**: `feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos` (🟡 `priority: p2-media`).
@@ -42,6 +42,6 @@
 ## 🔁 Continuidade de Sessão
 
 - **Última Sessão**: 2026-10-11
-- **Status da Sessão**: Sessão retomada com sucesso. PR #20 integrado na `main`.
+- **Status da Sessão**: TASK-04 implementada com sucesso. Pull Request #22 aberto para revisão da Issue #2.
 - **Branch Ativa**: `2-feateventos-criar-modulo-dtos-e-endpoints-de-criacao-e-listagem-de-eventos`
-- **Próximo Alvo**: Início do módulo de eventos (TASK-04 / Issue #2) ou prosseguimento de comentários (TASK-02 / Issue #11).
+- **Próximo Alvo**: Revisão/merge do PR #22 e início da TASK-02 (Issue #11 - Paginação de comentários e alinhamento do `getPost`).
