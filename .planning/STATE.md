@@ -33,7 +33,7 @@
 
 1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído, testado, mergeado na `main` via PR #20 e Issue #1 fechada. ✅
 2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` — Concluído, testado com 16 testes unitários e mergeado na `main` via PR #22. ✅
-3. **TASK-06 (Issue #14)**: `feat(eventos): enriquecer exibição e filtros de eventos no getFeed de postagens` (🟢 `priority: p3-baixa`) — Implementado com 22 testes unitários, build passando e documentado no Swagger. ✅
+3. **TASK-06 (Issue #14)**: `feat(eventos): enriquecer exibição e filtros de eventos no getFeed de postagens` (🟢 `priority: p3-baixa`) — Implementado com 22 testes unitários, build passando e [Pull Request #23](https://github.com/OharaTeam/Ohara-BackEnd/pull/23) aberto. ✅
 4. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`).
 5. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com controle de autor/admin DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
 6. **TASK-05 (Issue #13)**: `feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos` (🟡 `priority: p2-media`).
@@ -43,6 +43,6 @@
 ## 🔁 Continuidade de Sessão
 
 - **Última Sessão**: 2026-10-12
-- **Status da Sessão**: Issue #14 (TASK-06) implementada e validada com suíte de testes unitários e build verde.
+- **Status da Sessão**: Issue #14 (TASK-06) concluída. Pull Request #23 aberto no GitHub e aguardando revisão.
 - **Branch Ativa**: `14-feateventos-enriquecer-exibicao-e-filtros-de-eventos-no-getfeed-de-postagens`
-- **Próximo Alvo**: Realizar commit das alterações da Issue #14, abrir Pull Request no GitHub e seguir para a TASK-02 (Issue #11).
+- **Próximo Alvo**: Revisão/aprovação do PR #23 e início da TASK-02 (Issue #11: Paginação de comentários e alinhamento do `getPost`).
