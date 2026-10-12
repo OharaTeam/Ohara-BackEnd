@@ -23,12 +23,13 @@ import {
   ApiConsumes,
   ApiOperation,
   ApiParam,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { QueryFeedDto } from './dto/query-feed.dto';
+import { FeedResponseDto } from './dto/feed-response.dto';
 
 @ApiTags('postagens')
 @Controller('postagens')
@@ -40,29 +41,18 @@ export class PostagensController {
   @ApiOperation({
     summary: 'Obter feed de postagens',
     description:
-      'Retorna a lista paginada de postagens da comunidade com dados dos autores e contagem de comentários.',
+      'Retorna a lista paginada de postagens da comunidade com suporte a filtros por tipo (todos, posts ou eventos) e categoria de evento, com metadados de eventos enriquecidos.',
   })
-  @ApiQuery({
-    name: 'page',
-    description: 'Página a ser listada',
-    required: false,
-    example: '1',
+  @ApiResponse({
+    status: 200,
+    description: 'Feed retornado com sucesso.',
+    type: FeedResponseDto,
   })
-  @ApiQuery({
-    name: 'limit',
-    description: 'Limite de itens por página',
-    required: false,
-    example: '5',
-  })
-  @ApiResponse({ status: 200, description: 'Feed retornado com sucesso.' })
-  getFeed(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '5',
-  ) {
+  getFeed(@Query() query: QueryFeedDto) {
     this.logger.log(
-      `Solicitação de feed recebida com paginação: ${page}, limite: ${limit}`,
+      `Solicitação de feed recebida com paginação: ${query.page || 1}, limite: ${query.limit || 5}, tipo: ${query.tipo || 'todos'}`,
     );
-    return this.postagensService.getFeed(page, limit);
+    return this.postagensService.getFeed(query);
   }
 
   @Get(':id')
