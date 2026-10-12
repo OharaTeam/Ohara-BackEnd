@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostagensController } from './postagens.controller';
 import { PostagensService } from './postagens.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { QueryFeedDto, FeedTipoFilter } from './dto/query-feed.dto';
 
 describe('PostagensController', () => {
   let controller: PostagensController;
@@ -64,6 +65,49 @@ describe('PostagensController', () => {
 
       expect(service.createComment).toHaveBeenCalledWith(postId, userId, dto);
       expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe('getFeed', () => {
+    it('deve chamar o service.getFeed com o QueryFeedDto e retornar o feed formatado', async () => {
+      const query: QueryFeedDto = {
+        page: 1,
+        limit: 5,
+        tipo: FeedTipoFilter.EVENTOS,
+      };
+
+      const expectedFeed = {
+        data: [
+          {
+            id: 'post-1',
+            tittle: 'Torneio Cobblemon',
+            media: ['https://cdn.exemplo.com/banner.png'],
+            capa: 'https://cdn.exemplo.com/banner.png',
+            isEvento: true,
+            evento: {
+              id: 'evento-1',
+              nomeEvento: 'Torneio Cobblemon',
+              tipoEvento: 'COBBLEMON',
+              dataInicio: new Date(),
+              dataEncerramento: new Date(),
+              media: ['https://cdn.exemplo.com/banner.png'],
+            },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        total: 1,
+        page: 1,
+        limit: 5,
+        totalPages: 1,
+      };
+
+      (service.getFeed as jest.Mock).mockResolvedValue(expectedFeed);
+
+      const result = await controller.getFeed(query);
+
+      expect(service.getFeed).toHaveBeenCalledWith(query);
+      expect(result).toEqual(expectedFeed);
     });
   });
 });

@@ -69,7 +69,7 @@
 - [ ] **Módulo de Eventos Ohara** (`src/eventos`):
   - [x] **TASK-04**: Estruturar módulo, DTOs e endpoint `POST /eventos` integrado atomicamente ao feed (`Posts`) via transação Prisma, com agenda `GET /eventos` [🔴 `priority: p1-alta`]
   - [ ] **TASK-05**: Implementar endpoints de detalhes, atualização e cancelamento `GET/PATCH/DELETE /eventos/:id` [🟡 `priority: p2-media`]
-  - [ ] **TASK-06**: Enriquecer exibição e filtros de eventos no `getFeed` de postagens [🟢 `priority: p3-baixa`]
+  - [x] **TASK-06**: Enriquecer exibição e filtros de eventos no `getFeed` de postagens [🟢 `priority: p3-baixa`]
 
 > [!NOTE]
 > **Item Movido para Backlog Futuro**: A integração do **Módulo Minecraft & Cobblemon** (`ContaMinecraft`, `PokemonsCapturados`) possui complexidade de autenticação entre servidores (M2M) e sincronização de eventos de jogo, portanto seu planejamento detalhado e implementação serão realizados em uma etapa posterior dedicada.

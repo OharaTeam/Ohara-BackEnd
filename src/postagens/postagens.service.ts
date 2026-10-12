@@ -5,9 +5,11 @@ import {
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { QueryFeedDto, FeedTipoFilter } from './dto/query-feed.dto';
 
 @Injectable()
 export class PostagensService {
@@ -48,31 +50,69 @@ export class PostagensService {
     }
   }
 
-  async getFeed(page: string, limit: string) {
+  async getFeed(query: QueryFeedDto = {}) {
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 5;
+    const skip = (page - 1) * limit;
+
     this.logger.log(
-      `Solicitação de feed recebida com paginação: ${page}, limite: ${limit}`,
+      `Solicitação de feed recebida com paginação: ${page}, limite: ${limit}, tipo: ${query.tipo || 'todos'}${query.tipoEvento ? `, tipoEvento: ${query.tipoEvento}` : ''}`,
     );
+
+    const where: Prisma.PostWhereInput = {};
+
+    if (query.tipo === FeedTipoFilter.POSTS) {
+      where.eventoId = null;
+    } else if (query.tipo === FeedTipoFilter.EVENTOS) {
+      where.eventoId = { not: null };
+    }
+
+    if (query.tipoEvento) {
+      where.evento = {
+        tipoEvento: query.tipoEvento,
+      };
+    }
+
     try {
-      const feed = await this.prisma.post.findMany({
-        take: Number(limit),
-        skip: (Number(page) - 1) * Number(limit),
-        orderBy: {
-          updatedAt: 'desc', // Os últimos feitos ou editados
-        },
-        select: {
-          id: true,
-          tittle: true,
-          media: true,
-          evento: {
-            select: {
-              id: true,
-              nomeEvento: true,
+      const [feed, total] = await Promise.all([
+        this.prisma.post.findMany({
+          where,
+          take: limit,
+          skip,
+          orderBy: {
+            updatedAt: 'desc', // Os últimos feitos ou editados
+          },
+          select: {
+            id: true,
+            tittle: true,
+            content: true,
+            media: true,
+            createdAt: true,
+            updatedAt: true,
+            author: {
+              select: {
+                id: true,
+                username: true,
+                globalName: true,
+                avatarUrl: true,
+              },
+            },
+            evento: {
+              select: {
+                id: true,
+                nomeEvento: true,
+                tipoEvento: true,
+                dataInicio: true,
+                dataEncerramento: true,
+                media: true,
+              },
             },
           },
-        },
-      });
+        }),
+        this.prisma.post.count({ where }),
+      ]);
 
-      // Adiciona a foto de capa (primeira mídia do array) e formata a resposta
+      // Adiciona a foto de capa (primeira mídia do array), flag isEvento e formata a resposta
       const formattedFeed = feed.map((post) => {
         let capa: string | null = null;
 
@@ -85,13 +125,16 @@ export class PostagensService {
         return {
           ...post,
           capa,
+          isEvento: !!post.evento,
         };
       });
 
       return {
         data: formattedFeed,
-        page: Number(page),
-        limit: Number(limit),
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit) || 1,
       };
     } catch (error) {
       this.logger.warn(`Erro ao obter feed: ${error}`);

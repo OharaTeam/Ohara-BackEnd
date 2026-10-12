@@ -13,7 +13,7 @@ Com a criação de eventos gerando automaticamente postagens vinculadas no feed 
 - `src/postagens/postagens.controller.ts`
 
 ### ✅ Critérios de Aceite (Definition of Done)
-- [ ] `getFeed` retorna metadados completos de evento quando a postagem for associada a um evento
-- [ ] Frontend consegue diferenciar visualmente postagens comuns de eventos no feed
-- [ ] Suporte a filtro por tipo no feed documentado no Swagger
-- [ ] Build do projeto passando (`bun run build`)
+- [x] `getFeed` retorna metadados completos de evento quando a postagem for associada a um evento
+- [x] Frontend consegue diferenciar visualmente postagens comuns de eventos no feed
+- [x] Suporte a filtro por tipo no feed documentado no Swagger
+- [x] Build do projeto passando (`bun run build`)
