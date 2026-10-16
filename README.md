@@ -47,8 +47,9 @@ O **OharaBack-End** é a API REST central desenvolvida em [NestJS](https://nestj
 
 4. **Inicie o banco PostgreSQL via Docker**:
    ```bash
-   docker compose up -d postgres
+   docker compose up -d
    ```
+   *O `docker-compose.yml` da raiz foi preparado para subir apenas o banco de dados em desenvolvimento local. Para a VPS/produção, utiliza-se o `docker-compose.prod.yml`.*
 
 5. **Rode as migrações do Prisma**:
    ```bash

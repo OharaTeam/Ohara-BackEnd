@@ -1,63 +1,34 @@
+# ========================================================
+# OHARA BACK-END - AMBIENTE DE DESENVOLVIMENTO LOCAL
+# ========================================================
+# Este arquivo sobe apenas os serviços de infraestrutura necessários
+# para o desenvolvimento local (PostgreSQL).
+# Para iniciar o banco de dados:
+#   docker compose up -d
+# Para parar:
+#   docker compose down
+#
+# Para deploy em produção (VPS), utilize: docker-compose.prod.yml
+# ========================================================
+
 services:
   postgres:
     image: postgres:16-alpine
     container_name: ohara-postgres
-    restart: always
+    restart: unless-stopped
     ports:
-      - "127.0.0.1:5432:5432"
+      - "5432:5432"
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER:-ohara}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-docker}
+      POSTGRES_DB: ${DB_NAME:-ohara_db}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-ohara} -d $${POSTGRES_DB:-ohara_db}" ]
       interval: 5s
       timeout: 5s
-      retries: 12
-    networks:
-      - ohara-network
-
-  migrate:
-    build:
-      context: .
-      target: migrate
-    env_file:
-      - .env
-    environment:
-      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@ohara-postgres:5432/${DB_NAME}?schema=public"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: "no"
-    networks:
-      - ohara-network
-
-  backend:
-    build:
-      context: .
-      target: production
-    env_file:
-      - .env
-    container_name: ohara-backend
-    restart: always
-    ports:
-      - "127.0.0.1:3000:3000"
-    environment:
-      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@ohara-postgres:5432/${DB_NAME}?schema=public"
-    depends_on:
-      migrate:
-        condition: service_completed_successfully
-    volumes:
-      - ohara-uploads:/app/uploads
-    networks:
-      - ohara-network
-
-networks:
-  ohara-network:
-    external: true
+      retries: 10
 
 volumes:
   pgdata:
-  ohara-uploads:

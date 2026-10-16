@@ -33,8 +33,9 @@ Obrigado por contribuir com o ecossistema **Ohara**! Este documento orienta o pr
 
 4. **Inicie o Banco de Dados (PostgreSQL via Docker)**:
    ```bash
-   docker compose up -d postgres
+   docker compose up -d
    ```
+   *Nota: O `docker-compose.yml` da raiz está configurado especificamente para subir apenas o PostgreSQL no ambiente local. O deploy completo para VPS é gerenciado via `docker-compose.prod.yml`.*
 
 5. **Execute as Migrações e Gere o Prisma Client**:
    ```bash
