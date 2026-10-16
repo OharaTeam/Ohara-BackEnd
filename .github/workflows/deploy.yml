@@ -18,7 +18,7 @@ jobs:
           script: |
             cd ~/apps/OharaBack-End--NestJS-
             git pull origin main
-            docker compose up -d --build --force-recreate
+            docker compose -f docker-compose.prod.yml up -d --build --force-recreate
             
             echo "Aguardando 10 segundos para verificar a saúde do container..."
             sleep 10
