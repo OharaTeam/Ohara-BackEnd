@@ -8,11 +8,11 @@ Após a criação do módulo básico de eventos, a plataforma necessita de rotas
    - Retornar `404 Not Found` caso o ID não exista.
 3. Implementar endpoint `PATCH /eventos/:id`:
    - Proteger com `JwtAuthGuard`.
-   - Permitir apenas ao organizador ou administrador atualizar os dados.
+   - Permitir apenas ao organizador original (autor) ou administrador (cargo exclusivo `Dev`) atualizar os dados. Caso o usuário não tenha permissão, retornar `403 Forbidden`.
    - Atualizar apenas os campos fornecidos.
 4. Implementar endpoint `DELETE /eventos/:id`:
    - Proteger com `JwtAuthGuard`.
-   - Excluir o evento do banco (ou marcar como cancelado) caso o usuário tenha permissão.
+   - Excluir o evento do banco caso o usuário seja o autor ou possua o cargo de administrador (`Dev`). Caso não tenha permissão, retornar `403 Forbidden`.
 5. Documentar todos os status HTTP e parâmetros com decorators OpenAPI.
 
 ### 📂 Arquivos Afetados

@@ -62,4 +62,4 @@ O **OharaBack-End** é a API REST central do ecossistema **Ohara**, atuando como
 1. **Discord Bot (M2M)**: Consome rotas autenticadas por `X-API-KEY` para sincronizar membros e cargos periodicamente.
 2. **Frontend Web (Client / Dashboard)**: Consome rotas protegidas por JWT ou `X-SITE-KEY`, permitindo que os membros gerenciem seus perfis e visualizem o feed.
 3. **Usuário Comum**: Autentica via Discord OAuth2, personaliza bio/links/vitrine Steam e publica no feed.
-4. **Administrador**: Gerencia eventos e configurações globais.
+4. **Administrador (`Dev`)**: O único cargo com privilégios de administrador no sistema é o cargo **`Dev`**. Usuários com o cargo `Dev` possuem permissão para gerenciar, editar ou excluir recursos (eventos, postagens, comentários) independentemente de autoria original.
