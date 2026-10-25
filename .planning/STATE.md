@@ -41,6 +41,6 @@
 ## 🔁 Continuidade de Sessão
 
 - **Última Sessão**: 2026-10-25
-- **Status da Sessão**: Plano 03-01-PLAN.md (Issue #11) executado com sucesso e 6 commits realizados.
+- **Status da Sessão**: Plano 03-01-PLAN.md (Issue #11) executado com sucesso. [Pull Request #25](https://github.com/OharaTeam/Ohara-BackEnd/pull/25) aberto no GitHub e aguardando revisão.
 - **Branch Ativa**: `11-featcomentarios-implementar-listagem-paginada-get-postagensidcomentarios-e-alinhar-getpost`
-- **Próximo Alvo**: Abrir Pull Request para a Issue #11 no GitHub e iniciar TASK-03 (Issue #12).
+- **Próximo Alvo**: Revisão/aprovação do PR #25 e início da TASK-03 (Issue #12: Exclusão com controle de permissão).
