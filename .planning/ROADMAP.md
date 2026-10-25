@@ -25,8 +25,8 @@
 
 ---
 
-### 📍 Fase 1: Documentação Swagger & Estabilização da API (Concluída ✅)
-**Objetivo**: Completar os contratos da API no Swagger/OpenAPI e garantir consistência nos DTOs, schemas de resposta e tratamento de rotas existentes.
+### Phase 1: Documentação Swagger & Estabilização da API (Concluída ✅)
+**Goal:** Completar os contratos da API no Swagger/OpenAPI e garantir consistência nos DTOs, schemas de resposta e tratamento de rotas existentes.
 
 - [x] Configuração central do Swagger no `main.ts` com autenticação Bearer e API Keys.
 - [x] Documentar integralmente os controladores com `@ApiOperation`, `@ApiResponse`, `@ApiBody` e DTOs tipados:
@@ -40,8 +40,8 @@
 
 ---
 
-### 📍 Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub (Concluída e Revisada ✅)
-**Objetivo**: Alinhar o repositório para colaboração em equipe, documentar ambiente de setup, padronizar contribuição e quebrar o roadmap em micro-tasks automatizáveis no GitHub Issues e GitHub Projects.
+### Phase 2: Padronização Colaborativa, Onboarding & Automação no GitHub (Concluída e Revisada ✅)
+**Goal:** Alinhar o repositório para colaboração em equipe, documentar ambiente de setup, padronizar contribuição e quebrar o roadmap em micro-tasks automatizáveis no GitHub Issues e GitHub Projects.
 
 - [x] **Onboarding & Setup de Desenvolvimento**:
   - [x] Criação de `.env.example` exaustivo com descrição de cada variável (Discord, JWT, DB, Steam, Evolution API, Ports).
@@ -59,12 +59,12 @@
 
 ---
 
-### 📍 Fase 3: Implementação dos Módulos do Schema (Foco Atual 🚀)
-**Objetivo**: Desenvolver os domínios mapeados no `prisma/schema.prisma` que ainda não possuem endpoints REST implementados.
+### Phase 3: Modulos do Schema - Comentarios e Eventos
+**Goal:** Desenvolver os domínios mapeados no `prisma/schema.prisma` que ainda não possuem endpoints REST implementados.
 
 - [ ] **Módulo de Comentários** (Submódulo em `src/postagens` ou `src/comentarios`):
   - [x] **TASK-01**: Modelagem de DTOs e endpoint de criação `POST /postagens/:id/comentarios` [🔴 `priority: p1-alta`]
-  - [ ] **TASK-02**: Implementar listagem paginada `GET /postagens/:id/comentarios` com dados do autor e alinhar `getPost` com `_count.comentarios` [🔴 `priority: p1-alta`]
+  - [x] **TASK-02**: Implementar listagem paginada `GET /postagens/:id/comentarios` com dados do autor e alinhar `getPost` com `_count.comentarios` [🔴 `priority: p1-alta`]
   - [ ] **TASK-03**: Implementar exclusão com controle de autor/admin `DELETE /postagens/:id/comentarios/:commentId` [🟡 `priority: p2-media`]
 - [ ] **Módulo de Eventos Ohara** (`src/eventos`):
   - [x] **TASK-04**: Estruturar módulo, DTOs e endpoint `POST /eventos` integrado atomicamente ao feed (`Posts`) via transação Prisma, com agenda `GET /eventos` [🔴 `priority: p1-alta`]
@@ -76,8 +76,8 @@
 
 ---
 
-### 📍 Fase 4: Qualidade, Testes Automatizados & Blindagem de Segurança
-**Objetivo**: Blindar a integridade da API com suíte de testes unitários e E2E, além de implementar revogação ativa de tokens JWT.
+### Phase 4: Qualidade, Testes Automatizados & Blindagem de Segurança
+**Goal:** Blindar a integridade da API com suíte de testes unitários e E2E, além de implementar revogação ativa de tokens JWT.
 
 - [ ] **Testes Unitários com Jest**:
   - [ ] **TASK-07**: Testes unitários para `AuthService` e Guards (`JwtAuthGuard`, `BotKeyGuard`, `SiteKeyGuard`) [🔴 `priority: p1-alta`]
@@ -92,8 +92,8 @@
 
 ---
 
-### 📍 Fase 5: Observabilidade, CI/CD e Infraestrutura de Produção
-**Objetivo**: Automação contínua e prontidão operacional com monitoramento de saúde da API.
+### Phase 5: Observabilidade, CI/CD e Infraestrutura de Produção
+**Goal:** Automação contínua e prontidão operacional com monitoramento de saúde da API.
 
 - [ ] **TASK-14**: Pipeline de CI no GitHub Actions (`.github/workflows/ci.yml`) para rodar lint, build e testes como status check obrigatório em Pull Requests (sem auto-merge nem auto-deploy na `main`) [🔴 `priority: p1-alta`]
 - [ ] **TASK-15**: Interceptor global de logging estruturado e Global Exception Filter padronizado [🟡 `priority: p2-media`]

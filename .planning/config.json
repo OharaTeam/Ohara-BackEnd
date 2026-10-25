@@ -9,5 +9,43 @@
     "orm": "Prisma",
     "database": "PostgreSQL",
     "runtime": "Bun / Node.js"
-  }
+  },
+  "workflow": {
+    "research": true,
+    "nyquist_validation": true,
+    "pattern_mapper": true,
+    "ui_phase": true,
+    "ui_safety_gate": true,
+    "ai_integration_phase": true,
+    "tdd_mode": false,
+    "code_review": false,
+    "ui_review": true,
+    "plan_check": true,
+    "verifier": true,
+    "auto_advance": false,
+    "compact_content": false,
+    "research_before_questions": true,
+    "skip_discuss": false,
+    "use_worktrees": false
+  },
+  "intel": {
+    "enabled": false
+  },
+  "graphify": {
+    "enabled": false,
+    "auto_update": false
+  },
+  "model_profile": "inherit",
+  "commit_docs": false,
+  "plan_review": {
+    "source_grounding": true
+  },
+  "git": {
+    "branching_strategy": "none",
+    "create_tag": false
+  },
+  "hooks": {
+    "context_warnings": true
+  },
+  "response_language": "pt-BR"
 }
