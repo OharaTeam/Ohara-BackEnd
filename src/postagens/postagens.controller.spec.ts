@@ -3,6 +3,7 @@ import { PostagensController } from './postagens.controller';
 import { PostagensService } from './postagens.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { QueryFeedDto, FeedTipoFilter } from './dto/query-feed.dto';
+import { QueryCommentDto } from './dto/query-comment.dto';
 
 describe('PostagensController', () => {
   let controller: PostagensController;
@@ -14,6 +15,7 @@ describe('PostagensController', () => {
       createPost: jest.fn(),
       getFeed: jest.fn(),
       getPost: jest.fn(),
+      getComments: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -108,6 +110,47 @@ describe('PostagensController', () => {
 
       expect(service.getFeed).toHaveBeenCalledWith(query);
       expect(result).toEqual(expectedFeed);
+    });
+  });
+
+  describe('getComments', () => {
+    it('deve chamar o service.getComments com postId e QueryCommentDto e retornar a resposta paginada', async () => {
+      const postId = 'post-uuid-123';
+      const query: QueryCommentDto = {
+        page: 1,
+        limit: 5,
+        order: 'asc',
+      };
+
+      const expectedComments = {
+        data: [
+          {
+            id: 'comment-1',
+            content: 'Primeiro comentário',
+            media: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            author: {
+              id: 'author-1',
+              username: 'autor1',
+              globalName: 'Autor Um',
+              avatarUrl: 'https://exemplo.com/avatar.png',
+              roles: [{ name: 'Membro' }],
+            },
+          },
+        ],
+        total: 1,
+        page: 1,
+        limit: 5,
+        totalPages: 1,
+      };
+
+      (service.getComments as jest.Mock).mockResolvedValue(expectedComments);
+
+      const result = await controller.getComments(postId, query);
+
+      expect(service.getComments).toHaveBeenCalledWith(postId, query);
+      expect(result).toEqual(expectedComments);
     });
   });
 });

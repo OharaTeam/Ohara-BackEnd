@@ -30,6 +30,8 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { QueryFeedDto } from './dto/query-feed.dto';
 import { FeedResponseDto } from './dto/feed-response.dto';
+import { QueryCommentDto } from './dto/query-comment.dto';
+import { PaginatedCommentsResponseDto } from './dto/comment-response.dto';
 
 @ApiTags('postagens')
 @Controller('postagens')
@@ -195,5 +197,40 @@ export class PostagensController {
       req.user.id,
       createCommentDto,
     );
+  }
+
+  @Get(':id/comentarios')
+  @ApiOperation({
+    summary: 'Listar comentários paginados de uma postagem',
+    description:
+      'Retorna a lista paginada de comentários associados a uma postagem com dados públicos dos autores e contagem total.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'ID (UUID) da postagem',
+    required: true,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Comentários retornados com sucesso.',
+    type: PaginatedCommentsResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Parâmetros de paginação inválidos.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Postagem não encontrada.',
+  })
+  getComments(
+    @Param('id') id: string,
+    @Query() query: QueryCommentDto,
+  ) {
+    this.logger.log(
+      `Solicitação de comentários do post ${id}: página ${query.page || 1}, limite ${query.limit || 5}, ordem ${query.order || 'asc'}`,
+    );
+    return this.postagensService.getComments(id, query);
   }
 }

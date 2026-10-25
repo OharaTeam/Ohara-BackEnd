@@ -4,45 +4,43 @@
 
 - **Milestone Ativo**: Milestone 1 - Fundação e Padronização Colaborativa
 - **Fase Concluída e Revisada**: [Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-2-padroniza%C3%A7%C3%A3o-colaborativa-onboarding--automa%C3%A7%C3%A3o-no-github-conclu%C3%ADda-e-revisada-) ✅
-- **Fase Atual**: [Fase 3: Implementação dos Módulos do Schema (Comentários & Eventos)](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-3-implementa%C3%A7%C3%A3o-dos-m%C3%B3dulos-do-schema-foco-atual-) 🚀
-- **Branch Git**: `14-feateventos-enriquecer-exibicao-e-filtros-de-eventos-no-getfeed-de-postagens`
+- **Fase Atual**: [Phase 3: Modulos do Schema - Comentarios e Eventos](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#phase-3-modulos-do-schema---comentarios-e-eventos) 🚀
+- **Progresso da Fase 3**: [████████░░] 67% (4 de 6 tarefas concluídas)
+- **Branch Git**: `11-featcomentarios-implementar-listagem-paginada-get-postagensidcomentarios-e-alinhar-getpost`
 - **Quadro Kanban**: [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1)
-- **Última Atualização**: 2026-10-12
+- **Última Atualização**: 2026-10-25
 
 ---
 
 ## ⚡ Contexto Operacional
 
-- **Fase 2 Concluída e Reorganizada**:
-  - [`.env.example`](file:///home/caetano/OharaBack-End--NestJS-/.env.example): Criado e documentado cobrindo todos os serviços (PostgreSQL, Docker, JWT, Discord, Steam, Evolution API/WhatsApp).
-  - [`README.md`](file:///home/caetano/OharaBack-End--NestJS-/README.md): Atualizado com guia rápido de onboarding (Docker Compose, Bun, Prisma) e link para o GitHub Projects.
-  - [`CONTRIBUTING.md`](file:///home/caetano/OharaBack-End--NestJS-/CONTRIBUTING.md): Guia de início rápido para desenvolvedores novatos, fluxo do card ao PR, sanitização obrigatória de branches (sem caracteres especiais/acentos para evitar bugs no Git/GitHub) e regra estrita de aprovação manual para a `main`.
-  - [`.github/pull_request_template.md`](file:///home/caetano/OharaBack-End--NestJS-/.github/pull_request_template.md): Template padronizado de PR com checklist de verificação.
-  - Templates de Issue em [`.github/ISSUE_TEMPLATE/`](file:///home/caetano/OharaBack-End--NestJS-/.github/ISSUE_TEMPLATE/) (`task.yml`, `feature.yml`, `bug_report.yml`).
-  - **Reorganização das Issues do Roadmap**:
-    - Decomposição das grandes tarefas em **16 micro-tarefas atômicas** com escopos claros em [`.planning/github-issues/`](file:///home/caetano/OharaBack-End--NestJS-/.planning/github-issues/).
-    - Limpeza dos corpos das issues (sem títulos redundantes nem blocos soltos de frontmatter).
-    - Metadados e versionamento centralizados em [`.planning/github-issues/manifest.json`](file:///home/caetano/OharaBack-End--NestJS-/.planning/github-issues/manifest.json).
-    - Ordem de prioridade padronizada via labels (`priority: p1-alta`, `priority: p2-media`, `priority: p3-baixa`).
-    - Prevenção contra execuções acidentais: scripts de aplicação/sincronização de issues não são versionados no repositório (protegidos via `.gitignore`).
-    - Minecraft & Cobblemon movido para backlog futuro para planejamento dedicado.
+- **Pull Requests Recentes Mergeados**:
+  - **PR #23**: `feat(eventos): enriquecer exibição e filtros de eventos no getFeed de postagens` (Issue #14 fechada).
+  - **PR #24**: `docs: atualizando setup para desenvolvimento` (atualização de documentação de setup).
+- **Ambiente & Testes**:
+  - Runtime: Bun v1.4.2 / Node.js
+  - Banco de Dados: PostgreSQL (Docker Compose)
+  - Prisma Client: v7.9.1 sincronizado
+  - Build NestJS: 100% aprovado (`bun run build`)
+  - Testes unitários do módulo `src/postagens`: 35/35 testes passando (100%).
+  - Testes unitários do módulo `src/eventos`: 16/16 testes passando (100%).
 
 ---
 
 ## 🚀 Próximas Ações Imediatas (Fase 3)
 
-1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído, testado, mergeado na `main` via PR #20 e Issue #1 fechada. ✅
-2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` — Concluído, testado com 16 testes unitários e mergeado na `main` via PR #22. ✅
-3. **TASK-06 (Issue #14)**: `feat(eventos): enriquecer exibição e filtros de eventos no getFeed de postagens` (🟢 `priority: p3-baixa`) — Implementado com 22 testes unitários, build passando e [Pull Request #23](https://github.com/OharaTeam/Ohara-BackEnd/pull/23) aberto. ✅
-4. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`).
-5. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com controle de autor/admin DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
+1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído e mergeado via PR #20. ✅
+2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` — Concluído e mergeado via PR #22. ✅
+3. **TASK-06 (Issue #14)**: `feat(eventos): enriquecer exibição e filtros de eventos no getFeed de postagens` — Concluído e mergeado via PR #23. ✅
+4. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`) — Concluído e testado na branch com limite de 5 comentários. ✅
+5. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com permissão DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`) — **PRÓXIMO ALVO**.
 6. **TASK-05 (Issue #13)**: `feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos` (🟡 `priority: p2-media`).
 
 ---
 
 ## 🔁 Continuidade de Sessão
 
-- **Última Sessão**: 2026-10-12
-- **Status da Sessão**: Issue #14 (TASK-06) concluída. Pull Request #23 aberto no GitHub e aguardando revisão.
-- **Branch Ativa**: `14-feateventos-enriquecer-exibicao-e-filtros-de-eventos-no-getfeed-de-postagens`
-- **Próximo Alvo**: Revisão/aprovação do PR #23 e início da TASK-02 (Issue #11: Paginação de comentários e alinhamento do `getPost`).
+- **Última Sessão**: 2026-10-25
+- **Status da Sessão**: Plano 03-01-PLAN.md (Issue #11) executado com sucesso. [Pull Request #25](https://github.com/OharaTeam/Ohara-BackEnd/pull/25) aberto no GitHub e aguardando revisão.
+- **Branch Ativa**: `11-featcomentarios-implementar-listagem-paginada-get-postagensidcomentarios-e-alinhar-getpost`
+- **Próximo Alvo**: Revisão/aprovação do PR #25 e início da TASK-03 (Issue #12: Exclusão com controle de permissão).

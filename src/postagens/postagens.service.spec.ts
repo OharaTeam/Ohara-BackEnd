@@ -19,6 +19,8 @@ describe('PostagensService', () => {
     };
     comment: {
       create: jest.Mock;
+      findMany: jest.Mock;
+      count: jest.Mock;
     };
   };
 
@@ -34,6 +36,8 @@ describe('PostagensService', () => {
       },
       comment: {
         create: jest.fn(),
+        findMany: jest.fn(),
+        count: jest.fn(),
       },
     };
 
@@ -291,6 +295,200 @@ describe('PostagensService', () => {
           },
         }),
       );
+    });
+  });
+
+  describe('getPost', () => {
+    const postId = 'post-123';
+    const mockDate = new Date();
+
+    it('deve buscar postagem por id selecionando _count de comentários e formatando a capa', async () => {
+      const mockPost = {
+        id: postId,
+        tittle: 'Título do Post',
+        content: 'Conteúdo detalhado',
+        media: [
+          'https://exemplo.com/capa.png',
+          'https://exemplo.com/extra.png',
+        ],
+        authorId: 'discord-123',
+        author: {
+          globalName: 'Autor Post',
+          avatarUrl: 'https://exemplo.com/avatar.png',
+          roles: [{ name: 'Membro' }],
+        },
+        createdAt: mockDate,
+        updatedAt: mockDate,
+        _count: {
+          comentarios: 3,
+        },
+        evento: null,
+      };
+
+      prisma.post.findUnique.mockResolvedValue(mockPost);
+
+      const result = await service.getPost(postId);
+
+      expect(prisma.post.findUnique).toHaveBeenCalledWith({
+        where: { id: postId },
+        select: expect.objectContaining({
+          _count: {
+            select: {
+              comentarios: true,
+            },
+          },
+        }),
+      });
+      expect(result.id).toBe(postId);
+      expect(result._count.comentarios).toBe(3);
+      expect(result.capa).toBe('https://exemplo.com/capa.png');
+    });
+
+    it('deve lançar NotFoundException quando a postagem não existir', async () => {
+      prisma.post.findUnique.mockResolvedValue(null);
+
+      await expect(service.getPost(postId)).rejects.toThrow(
+        new NotFoundException('Postagem não encontrada.'),
+      );
+
+      expect(prisma.post.findUnique).toHaveBeenCalledWith({
+        where: { id: postId },
+        select: expect.any(Object),
+      });
+    });
+  });
+
+  describe('getComments', () => {
+    const postId = 'post-123';
+    const mockDate = new Date();
+    const mockComments = [
+      {
+        id: 'comment-1',
+        content: 'Primeiro comentário',
+        media: ['https://exemplo.com/img.png'],
+        createdAt: mockDate,
+        updatedAt: mockDate,
+        author: {
+          id: 'user-1',
+          username: 'usuario1',
+          globalName: 'Usuário Um',
+          avatarUrl: 'https://exemplo.com/avatar1.png',
+          roles: [{ name: 'Moderador' }],
+        },
+      },
+    ];
+
+    it('deve lançar NotFoundException quando a postagem não for encontrada', async () => {
+      prisma.post.findUnique.mockResolvedValue(null);
+
+      await expect(service.getComments(postId, {})).rejects.toThrow(
+        new NotFoundException('Postagem não encontrada.'),
+      );
+
+      expect(prisma.post.findUnique).toHaveBeenCalledWith({
+        where: { id: postId },
+        select: { id: true },
+      });
+      expect(prisma.comment.findMany).not.toHaveBeenCalled();
+      expect(prisma.comment.count).not.toHaveBeenCalled();
+    });
+
+    it('deve retornar comentários paginados com valores padrão (page: 1, limit: 5, order: "asc")', async () => {
+      prisma.post.findUnique.mockResolvedValue({ id: postId });
+      prisma.comment.findMany.mockResolvedValue(mockComments);
+      prisma.comment.count.mockResolvedValue(11);
+
+      const result = await service.getComments(postId, {});
+
+      expect(prisma.post.findUnique).toHaveBeenCalledWith({
+        where: { id: postId },
+        select: { id: true },
+      });
+      expect(prisma.comment.findMany).toHaveBeenCalledWith({
+        where: { postId },
+        take: 5,
+        skip: 0,
+        orderBy: {
+          createdAt: 'asc',
+        },
+        select: expect.objectContaining({
+          id: true,
+          content: true,
+          media: true,
+          createdAt: true,
+          updatedAt: true,
+          author: {
+            select: {
+              id: true,
+              username: true,
+              globalName: true,
+              avatarUrl: true,
+              roles: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        }),
+      });
+      expect(prisma.comment.count).toHaveBeenCalledWith({
+        where: { postId },
+      });
+
+      expect(result).toEqual({
+        data: mockComments,
+        total: 11,
+        page: 1,
+        limit: 5,
+        totalPages: 3,
+      });
+    });
+
+    it('deve retornar comentários paginados com parâmetros customizados (page: 2, limit: 5, order: "desc")', async () => {
+      prisma.post.findUnique.mockResolvedValue({ id: postId });
+      prisma.comment.findMany.mockResolvedValue(mockComments);
+      prisma.comment.count.mockResolvedValue(7);
+
+      const result = await service.getComments(postId, {
+        page: 2,
+        limit: 5,
+        order: 'desc',
+      });
+
+      expect(prisma.comment.findMany).toHaveBeenCalledWith({
+        where: { postId },
+        take: 5,
+        skip: 5,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        select: expect.any(Object),
+      });
+
+      expect(result.page).toBe(2);
+      expect(result.limit).toBe(5);
+      expect(result.total).toBe(7);
+      expect(result.totalPages).toBe(2);
+    });
+
+    it('deve restringir o limite a no máximo 5 caso valor maior seja fornecido', async () => {
+      prisma.post.findUnique.mockResolvedValue({ id: postId });
+      prisma.comment.findMany.mockResolvedValue([]);
+      prisma.comment.count.mockResolvedValue(0);
+
+      const result = await service.getComments(postId, {
+        page: 1,
+        limit: 10,
+      });
+
+      expect(prisma.comment.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          take: 5,
+          skip: 0,
+        }),
+      );
+      expect(result.limit).toBe(5);
     });
   });
 });
