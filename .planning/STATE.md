@@ -43,6 +43,6 @@
 ## 🔁 Continuidade de Sessão
 
 - **Última Sessão**: 2026-10-25
-- **Status da Sessão**: Plano `03-02-PLAN.md` executado com sucesso (TASK-05 / Issue #13). Endpoints `GET /eventos/:id`, `PATCH /eventos/:id` e `DELETE /eventos/:id` implementados com controle estrito RBAC Dev, 38/38 testes unitários passando e build validado.
+- **Status da Sessão**: Plano `03-02-PLAN.md` executado com sucesso (TASK-05 / Issue #13). Endpoints `GET /eventos/:id`, `PATCH /eventos/:id` e `DELETE /eventos/:id` implementados com controle estrito RBAC Dev, 38/38 testes unitários passando e [Pull Request #26](https://github.com/OharaTeam/Ohara-BackEnd/pull/26) aberto no GitHub.
 - **Branch Ativa**: `13-feateventos-implementar-endpoints-de-detalhes-atualizacao-e-exclusao-de-eventos`
-- **Próximo Alvo**: Submissão da branch para PR no GitHub e início da TASK-03 (Issue #12: Exclusão com permissão de comentários).
+- **Próximo Alvo**: Revisão/merge do PR #26 e início da última tarefa da Fase 3: TASK-03 (Issue #12: `DELETE /postagens/:id/comentarios/:commentId`).
