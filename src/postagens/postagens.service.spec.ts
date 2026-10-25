@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostagensService } from './postagens.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { NotFoundException } from '@nestjs/common';
+import {
+  NotFoundException,
+  ForbiddenException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { tipoEvento } from '@prisma/client';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { FeedTipoFilter } from './dto/query-feed.dto';
@@ -20,6 +24,8 @@ describe('PostagensService', () => {
     comment: {
       create: jest.Mock;
       findMany: jest.Mock;
+      findFirst: jest.Mock;
+      delete: jest.Mock;
       count: jest.Mock;
     };
   };
@@ -37,6 +43,8 @@ describe('PostagensService', () => {
       comment: {
         create: jest.fn(),
         findMany: jest.fn(),
+        findFirst: jest.fn(),
+        delete: jest.fn(),
         count: jest.fn(),
       },
     };
@@ -489,6 +497,116 @@ describe('PostagensService', () => {
         }),
       );
       expect(result.limit).toBe(5);
+    });
+  });
+
+  describe('deleteComment', () => {
+    const postId = 'post-uuid-123';
+    const commentId = 'comment-uuid-456';
+    const userId = 'user-uuid-789';
+
+    it('deve excluir o comentário com sucesso quando o usuário for o autor', async () => {
+      prisma.comment.findFirst.mockResolvedValue({
+        id: commentId,
+        authorId: 'discord-author-123',
+      });
+      prisma.user.findUnique.mockResolvedValue({
+        discordId: 'discord-author-123',
+        roles: [{ name: 'Membro' }],
+      });
+      prisma.comment.delete.mockResolvedValue({ id: commentId });
+
+      const result = await service.deleteComment(postId, commentId, userId);
+
+      expect(prisma.comment.findFirst).toHaveBeenCalledWith({
+        where: { id: commentId, postId },
+        select: { id: true, authorId: true },
+      });
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: userId },
+        select: {
+          discordId: true,
+          roles: { select: { name: true } },
+        },
+      });
+      expect(prisma.comment.delete).toHaveBeenCalledWith({
+        where: { id: commentId },
+      });
+      expect(result).toEqual({ message: 'Comentário removido com sucesso' });
+    });
+
+    it('deve excluir o comentário com sucesso quando o usuário não for o autor mas possuir cargo Dev', async () => {
+      prisma.comment.findFirst.mockResolvedValue({
+        id: commentId,
+        authorId: 'discord-author-123',
+      });
+      prisma.user.findUnique.mockResolvedValue({
+        discordId: 'discord-admin-999',
+        roles: [{ name: 'Dev' }],
+      });
+      prisma.comment.delete.mockResolvedValue({ id: commentId });
+
+      const result = await service.deleteComment(postId, commentId, userId);
+
+      expect(prisma.comment.delete).toHaveBeenCalledWith({
+        where: { id: commentId },
+      });
+      expect(result).toEqual({ message: 'Comentário removido com sucesso' });
+    });
+
+    it('deve lançar NotFoundException quando o comentário não for encontrado', async () => {
+      prisma.comment.findFirst.mockResolvedValue(null);
+
+      await expect(
+        service.deleteComment(postId, commentId, userId),
+      ).rejects.toThrow(new NotFoundException('Comentário não encontrado'));
+
+      expect(prisma.comment.delete).not.toHaveBeenCalled();
+    });
+
+    it('deve lançar NotFoundException quando o usuário não for encontrado', async () => {
+      prisma.comment.findFirst.mockResolvedValue({
+        id: commentId,
+        authorId: 'discord-author-123',
+      });
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      await expect(
+        service.deleteComment(postId, commentId, userId),
+      ).rejects.toThrow(new NotFoundException('Usuário não encontrado'));
+
+      expect(prisma.comment.delete).not.toHaveBeenCalled();
+    });
+
+    it('deve lançar ForbiddenException quando o usuário não for o autor e não possuir cargo Dev', async () => {
+      prisma.comment.findFirst.mockResolvedValue({
+        id: commentId,
+        authorId: 'discord-author-123',
+      });
+      prisma.user.findUnique.mockResolvedValue({
+        discordId: 'discord-other-user',
+        roles: [{ name: 'Membro' }],
+      });
+
+      await expect(
+        service.deleteComment(postId, commentId, userId),
+      ).rejects.toThrow(
+        new ForbiddenException(
+          'Você não tem permissão para excluir este comentário',
+        ),
+      );
+
+      expect(prisma.comment.delete).not.toHaveBeenCalled();
+    });
+
+    it('deve lançar InternalServerErrorException em falha inesperada', async () => {
+      prisma.comment.findFirst.mockRejectedValue(new Error('DB failure'));
+
+      await expect(
+        service.deleteComment(postId, commentId, userId),
+      ).rejects.toThrow(
+        new InternalServerErrorException('Erro ao excluir comentário'),
+      );
     });
   });
 });

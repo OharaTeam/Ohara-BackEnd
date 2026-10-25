@@ -4,6 +4,7 @@ import {
   BadRequestException,
   NotFoundException,
   InternalServerErrorException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -348,6 +349,68 @@ export class PostagensService {
       }
       this.logger.warn(`Erro ao obter comentários: ${error}`);
       throw new InternalServerErrorException('Erro ao obter comentários');
+    }
+  }
+  /**
+   * Exclui um comentário de uma postagem.
+   * Regra RBAC: Apenas o autor do comentário ou administradores com o cargo 'Dev' podem excluir.
+   */
+  async deleteComment(postId: string, commentId: string, userId: string) {
+    this.logger.log(
+      `Solicitação de exclusão do comentário ${commentId} no post ${postId} pelo usuário ${userId}`,
+    );
+    try {
+      // 1. Busca o comentário DENTRO da postagem da URL
+      const comment = await this.prisma.comment.findFirst({
+        where: { id: commentId, postId },
+        select: { id: true, authorId: true },
+      });
+
+      if (!comment) {
+        throw new NotFoundException('Comentário não encontrado');
+      }
+
+      // 2. Busca o usuário autenticado com seus cargos
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          discordId: true,
+          roles: { select: { name: true } },
+        },
+      });
+
+      if (!user) {
+        throw new NotFoundException('Usuário não encontrado');
+      }
+
+      // 3. Regras de permissão
+      const ehAutor = comment.authorId === user.discordId;
+      const ehDev = (user.roles || []).some(
+        (role) =>
+          (typeof role === 'string' ? role : role?.name)?.toLowerCase() ===
+            'dev' || (typeof role === 'string' ? role : role?.name) === 'Dev',
+      );
+
+      if (!ehAutor && !ehDev) {
+        throw new ForbiddenException(
+          'Você não tem permissão para excluir este comentário',
+        );
+      }
+
+      // 4. Exclui
+      await this.prisma.comment.delete({ where: { id: comment.id } });
+
+      return { message: 'Comentário removido com sucesso' };
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException ||
+        error instanceof ForbiddenException
+      ) {
+        throw error;
+      }
+      this.logger.error(`Erro ao excluir comentário: ${error}`);
+      throw new InternalServerErrorException('Erro ao excluir comentário');
     }
   }
 }
