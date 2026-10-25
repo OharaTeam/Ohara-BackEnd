@@ -24,6 +24,14 @@ export class EventoAuthorDto {
   avatarUrl?: string | null;
 }
 
+export class EventoCountDto {
+  @ApiPropertyOptional({
+    description: 'Quantidade de Pokémons capturados associados ao evento',
+    example: 5,
+  })
+  pokemonsCapturados?: number;
+}
+
 export class EventoResponseDto {
   @ApiProperty({
     description: 'ID único do evento (UUID)',
@@ -98,6 +106,12 @@ export class EventoResponseDto {
     example: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
   })
   postId?: string;
+
+  @ApiPropertyOptional({
+    description: 'Contagens de entidades associadas ao evento',
+    type: EventoCountDto,
+  })
+  _count?: EventoCountDto;
 }
 
 export class EventoListResponseDto {
