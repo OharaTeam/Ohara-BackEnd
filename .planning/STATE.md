@@ -5,7 +5,7 @@
 - **Milestone Ativo**: Milestone 1 - Fundação e Padronização Colaborativa
 - **Fase Concluída e Revisada**: [Fase 2: Padronização Colaborativa, Onboarding & Automação no GitHub](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#fase-2-padroniza%C3%A7%C3%A3o-colaborativa-onboarding--automa%C3%A7%C3%A3o-no-github-conclu%C3%ADda-e-revisada-) ✅
 - **Fase Atual**: [Phase 3: Modulos do Schema - Comentarios e Eventos](file:///home/caetano/OharaBack-End--NestJS-/.planning/ROADMAP.md#phase-3-modulos-do-schema---comentarios-e-eventos) 🚀
-- **Progresso da Fase 3**: [████████░░] 67% (4 de 6 tarefas concluídas)
+- **Progresso da Fase 3**: [█████████░] 83% (5 de 6 tarefas concluídas)
 - **Branch Git**: `13-feateventos-implementar-endpoints-de-detalhes-atualizacao-e-exclusao-de-eventos`
 - **Quadro Kanban**: [GitHub Projects #1 (Ohara Back-End - Roadmap & Sprint)](https://github.com/orgs/OharaTeam/projects/1)
 - **Última Atualização**: 2026-10-25
@@ -25,7 +25,7 @@
   - Prisma Client: v7.9.1 sincronizado
   - Build NestJS: 100% aprovado (`bun run build`)
   - Testes unitários do módulo `src/postagens`: 35/35 testes passando (100%).
-  - Testes unitários do módulo `src/eventos`: 16/16 testes passando (100%).
+  - Testes unitários do módulo `src/eventos`: 38/38 testes passando (100%).
 
 ---
 
@@ -34,15 +34,15 @@
 1. **TASK-01 (Issue #1)**: `feat(comentarios): modelar DTOs e criar endpoint POST /postagens/:id/comentarios` — Concluído e mergeado via PR #20. ✅
 2. **TASK-04 (Issue #2)**: `feat(eventos): criar módulo, DTOs e endpoint POST /eventos integrado ao feed com agenda GET /eventos` — Concluído e mergeado via PR #22. ✅
 3. **TASK-06 (Issue #14)**: `feat(eventos): enriquecer exibição e filtros de eventos no getFeed de postagens` — Concluído e mergeado via PR #23. ✅
-4. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`) — Concluído e testado na branch com limite de 5 comentários (PR #25 aguardando merge). ✅
-5. **TASK-05 (Issue #13)**: `feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos` (🟡 `priority: p2-media`) — **ALVO ATUAL DE PLANEJAMENTO**. 🎯
-6. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com permissão DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`).
+4. **TASK-02 (Issue #11)**: `feat(comentarios): implementar listagem paginada GET /postagens/:id/comentarios e alinhar getPost` (🔴 `priority: p1-alta`) — Concluído e mergeado via PR #25. ✅
+5. **TASK-05 (Issue #13)**: `feat(eventos): implementar endpoints de detalhes, atualização e exclusão de eventos` (🟡 `priority: p2-media`) — Concluído e testado na branch via plano 03-02. ✅
+6. **TASK-03 (Issue #12)**: `feat(comentarios): implementar exclusão com permissão DELETE /postagens/:id/comentarios/:commentId` (🟡 `priority: p2-media`) — **PRÓXIMO ALVO**.
 
 ---
 
 ## 🔁 Continuidade de Sessão
 
 - **Última Sessão**: 2026-10-25
-- **Status da Sessão**: Plano `03-02-PLAN.md` gerado com sucesso para a **Issue #13 (TASK-05)** com cobertura de detalhes, atualização e exclusão de eventos com controle RBAC exclusivo para o cargo `Dev`.
+- **Status da Sessão**: Plano `03-02-PLAN.md` executado com sucesso (TASK-05 / Issue #13). Endpoints `GET /eventos/:id`, `PATCH /eventos/:id` e `DELETE /eventos/:id` implementados com controle estrito RBAC Dev, 38/38 testes unitários passando e build validado.
 - **Branch Ativa**: `13-feateventos-implementar-endpoints-de-detalhes-atualizacao-e-exclusao-de-eventos`
-- **Próximo Alvo**: Execução do plano `03-02-PLAN.md` via `/gsd-execute-phase 3`.
+- **Próximo Alvo**: Submissão da branch para PR no GitHub e início da TASK-03 (Issue #12: Exclusão com permissão de comentários).
