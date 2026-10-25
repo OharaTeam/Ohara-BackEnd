@@ -3,6 +3,7 @@ import { EventosController } from './eventos.controller';
 import { EventosService } from './eventos.service';
 import { tipoEvento } from '@prisma/client';
 import { CreateEventoDto } from './dto/create-evento.dto';
+import { UpdateEventoDto } from './dto/update-evento.dto';
 import { QueryEventoDto } from './dto/query-evento.dto';
 
 describe('EventosController', () => {
@@ -10,12 +11,18 @@ describe('EventosController', () => {
   let service: {
     createEvento: jest.Mock;
     getEventos: jest.Mock;
+    getEventoById: jest.Mock;
+    updateEvento: jest.Mock;
+    deleteEvento: jest.Mock;
   };
 
   beforeEach(async () => {
     service = {
       createEvento: jest.fn(),
       getEventos: jest.fn(),
+      getEventoById: jest.fn(),
+      updateEvento: jest.fn(),
+      deleteEvento: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -91,6 +98,91 @@ describe('EventosController', () => {
       const result = await controller.getEventos(query);
 
       expect(service.getEventos).toHaveBeenCalledWith(query);
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe('getEventoById', () => {
+    it('deve chamar service.getEventoById com o ID e retornar o resultado', async () => {
+      const mockEvento = {
+        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        nomeEvento: 'Torneio Especial',
+        postId: 'post-1',
+      };
+
+      service.getEventoById.mockResolvedValue(mockEvento);
+
+      const result = await controller.getEventoById(
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+      );
+
+      expect(service.getEventoById).toHaveBeenCalledWith(
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+      );
+      expect(result).toEqual(mockEvento);
+    });
+  });
+
+  describe('updateEvento', () => {
+    it('deve chamar service.updateEvento com id, user e dto', async () => {
+      const dto: UpdateEventoDto = {
+        descricao: 'Nova descrição',
+      };
+
+      const req = {
+        user: {
+          id: 'user-id-123',
+          discordId: 'discord-98765',
+          username: 'caetano',
+          roles: ['Dev'],
+        },
+      };
+
+      const mockResponse = {
+        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        descricao: 'Nova descrição',
+      };
+
+      service.updateEvento.mockResolvedValue(mockResponse);
+
+      const result = await controller.updateEvento(
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        dto,
+        req,
+      );
+
+      expect(service.updateEvento).toHaveBeenCalledWith(
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        req.user,
+        dto,
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe('deleteEvento', () => {
+    it('deve chamar service.deleteEvento com id e user', async () => {
+      const req = {
+        user: {
+          id: 'user-id-123',
+          discordId: 'discord-98765',
+          username: 'caetano',
+          roles: ['Dev'],
+        },
+      };
+
+      const mockResponse = { message: 'Evento excluído com sucesso.' };
+      service.deleteEvento.mockResolvedValue(mockResponse);
+
+      const result = await controller.deleteEvento(
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        req,
+      );
+
+      expect(service.deleteEvento).toHaveBeenCalledWith(
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        req.user,
+      );
       expect(result).toEqual(mockResponse);
     });
   });
