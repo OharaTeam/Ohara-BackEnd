@@ -10,6 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFiles,
+  Delete,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -224,13 +225,40 @@ export class PostagensController {
     status: 404,
     description: 'Postagem não encontrada.',
   })
-  getComments(
-    @Param('id') id: string,
-    @Query() query: QueryCommentDto,
-  ) {
+  getComments(@Param('id') id: string, @Query() query: QueryCommentDto) {
     this.logger.log(
       `Solicitação de comentários do post ${id}: página ${query.page || 1}, limite ${query.limit || 5}, ordem ${query.order || 'asc'}`,
     );
     return this.postagensService.getComments(id, query);
+  }
+  @Delete(':id/comentarios/:commentId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Excluir um comentário de uma postagem' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID (UUID) da postagem',
+    required: true,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiParam({
+    name: 'commentId',
+    description: 'ID (UUID) do comentário',
+    required: true,
+    example: '123e4567-e89b-12d3-a456-426614174999',
+  })
+  @ApiResponse({ status: 200, description: 'Comentário excluído' })
+  @ApiResponse({ status: 401, description: 'Não autenticado' })
+  @ApiResponse({ status: 403, description: 'Sem permissão para excluir' })
+  @ApiResponse({ status: 404, description: 'Comentário não encontrado' })
+  deleteComment(
+    @Param('id') id: string,
+    @Param('commentId') commentId: string,
+    @Req() req: any,
+  ) {
+    this.logger.log(
+      `Solicitação de exclusão do comentário ${commentId} no post ${id}`,
+    );
+    return this.postagensService.deleteComment(id, commentId, req.user);
   }
 }
