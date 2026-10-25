@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -33,6 +34,17 @@ import { QueryFeedDto } from './dto/query-feed.dto';
 import { FeedResponseDto } from './dto/feed-response.dto';
 import { QueryCommentDto } from './dto/query-comment.dto';
 import { PaginatedCommentsResponseDto } from './dto/comment-response.dto';
+
+interface AuthenticatedUser {
+  id: string;
+  discordId: string;
+  username: string;
+  roles?: (string | { name?: string })[];
+}
+
+interface AuthenticatedRequest {
+  user: AuthenticatedUser;
+}
 
 @ApiTags('postagens')
 @Controller('postagens')
@@ -188,7 +200,7 @@ export class PostagensController {
   createComment(
     @Param('id') id: string,
     @Body() createCommentDto: CreateCommentDto,
-    @Req() req: any,
+    @Req() req: AuthenticatedRequest,
   ) {
     this.logger.log(
       `Solicitação de criação de comentário no post ${id} recebida`,
@@ -248,17 +260,21 @@ export class PostagensController {
     example: '123e4567-e89b-12d3-a456-426614174999',
   })
   @ApiResponse({ status: 200, description: 'Comentário excluído' })
+  @ApiResponse({
+    status: 400,
+    description: 'ID inválido (esperado UUID válido).',
+  })
   @ApiResponse({ status: 401, description: 'Não autenticado' })
   @ApiResponse({ status: 403, description: 'Sem permissão para excluir' })
   @ApiResponse({ status: 404, description: 'Comentário não encontrado' })
   deleteComment(
-    @Param('id') id: string,
-    @Param('commentId') commentId: string,
-    @Req() req: any,
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('commentId', new ParseUUIDPipe({ version: '4' })) commentId: string,
+    @Req() req: AuthenticatedRequest,
   ) {
     this.logger.log(
       `Solicitação de exclusão do comentário ${commentId} no post ${id}`,
     );
-    return this.postagensService.deleteComment(id, commentId, req.user);
+    return this.postagensService.deleteComment(id, commentId, req.user.id);
   }
 }

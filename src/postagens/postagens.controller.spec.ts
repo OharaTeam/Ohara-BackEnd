@@ -16,6 +16,7 @@ describe('PostagensController', () => {
       getFeed: jest.fn(),
       getPost: jest.fn(),
       getComments: jest.fn(),
+      deleteComment: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -151,6 +152,33 @@ describe('PostagensController', () => {
 
       expect(service.getComments).toHaveBeenCalledWith(postId, query);
       expect(result).toEqual(expectedComments);
+    });
+  });
+
+  describe('deleteComment', () => {
+    it('deve chamar o service.deleteComment com postId, commentId e req.user.id e retornar mensagem de sucesso', async () => {
+      const postId = '123e4567-e89b-12d3-a456-426614174000';
+      const commentId = '123e4567-e89b-12d3-a456-426614174999';
+      const req = {
+        user: {
+          id: 'user-uuid-789',
+          discordId: 'discord-789',
+          username: 'usuario',
+          roles: ['Dev'],
+        },
+      };
+      const expectedResult = { message: 'Comentário removido com sucesso' };
+
+      (service.deleteComment as jest.Mock).mockResolvedValue(expectedResult);
+
+      const result = await controller.deleteComment(postId, commentId, req);
+
+      expect(service.deleteComment).toHaveBeenCalledWith(
+        postId,
+        commentId,
+        req.user.id,
+      );
+      expect(result).toEqual(expectedResult);
     });
   });
 });

@@ -351,6 +351,10 @@ export class PostagensService {
       throw new InternalServerErrorException('Erro ao obter comentários');
     }
   }
+  /**
+   * Exclui um comentário de uma postagem.
+   * Regra RBAC: Apenas o autor do comentário ou administradores com o cargo 'Dev' podem excluir.
+   */
   async deleteComment(postId: string, commentId: string, userId: string) {
     this.logger.log(
       `Solicitação de exclusão do comentário ${commentId} no post ${postId} pelo usuário ${userId}`,
@@ -381,13 +385,13 @@ export class PostagensService {
 
       // 3. Regras de permissão
       const ehAutor = comment.authorId === user.discordId;
-      // Cargo com permissáo de exclusão
-      const cargosComPermissao = ['Dev'];
-      const ehAdminOuModerador = user.roles.some((role) =>
-        cargosComPermissao.includes(role.name.toLowerCase()),
+      const ehDev = (user.roles || []).some(
+        (role) =>
+          (typeof role === 'string' ? role : role?.name)?.toLowerCase() ===
+            'dev' || (typeof role === 'string' ? role : role?.name) === 'Dev',
       );
 
-      if (!ehAutor && !ehAdminOuModerador) {
+      if (!ehAutor && !ehDev) {
         throw new ForbiddenException(
           'Você não tem permissão para excluir este comentário',
         );
@@ -405,7 +409,7 @@ export class PostagensService {
       ) {
         throw error;
       }
-      this.logger.warn(`Erro ao excluir comentário: ${error}`);
+      this.logger.error(`Erro ao excluir comentário: ${error}`);
       throw new InternalServerErrorException('Erro ao excluir comentário');
     }
   }
