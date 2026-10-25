@@ -10,6 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { QueryFeedDto, FeedTipoFilter } from './dto/query-feed.dto';
+import { QueryCommentDto } from './dto/query-comment.dto';
 
 @Injectable()
 export class PostagensService {
@@ -274,6 +275,79 @@ export class PostagensService {
       }
       this.logger.warn(`Erro ao criar comentário: ${error}`);
       throw new InternalServerErrorException('Erro ao criar comentário');
+    }
+  }
+
+  async getComments(postId: string, query: QueryCommentDto = {}) {
+    const page = Number(query.page) || 1;
+    const limit = Math.min(Number(query.limit) || 5, 5);
+    const order = query.order === 'desc' ? 'desc' : 'asc';
+    const skip = (page - 1) * limit;
+
+    this.logger.log(
+      `Solicitação de comentários para o post ${postId}: página ${page}, limite ${limit}, ordem ${order}`,
+    );
+
+    try {
+      const post = await this.prisma.post.findUnique({
+        where: { id: postId },
+        select: { id: true },
+      });
+
+      if (!post) {
+        throw new NotFoundException('Postagem não encontrada.');
+      }
+
+      const [comments, total] = await Promise.all([
+        this.prisma.comment.findMany({
+          where: { postId },
+          take: limit,
+          skip,
+          orderBy: {
+            createdAt: order,
+          },
+          select: {
+            id: true,
+            content: true,
+            media: true,
+            createdAt: true,
+            updatedAt: true,
+            author: {
+              select: {
+                id: true,
+                username: true,
+                globalName: true,
+                avatarUrl: true,
+                roles: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.comment.count({
+          where: { postId },
+        }),
+      ]);
+
+      return {
+        data: comments,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit) || 1,
+      };
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+      this.logger.warn(`Erro ao obter comentários: ${error}`);
+      throw new InternalServerErrorException('Erro ao obter comentários');
     }
   }
 }
