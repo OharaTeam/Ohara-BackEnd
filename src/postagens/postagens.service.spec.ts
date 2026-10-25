@@ -5,7 +5,6 @@ import { NotFoundException } from '@nestjs/common';
 import { tipoEvento } from '@prisma/client';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { FeedTipoFilter } from './dto/query-feed.dto';
-import { QueryCommentDto } from './dto/query-comment.dto';
 
 describe('PostagensService', () => {
   let service: PostagensService;
@@ -308,7 +307,10 @@ describe('PostagensService', () => {
         id: postId,
         tittle: 'Título do Post',
         content: 'Conteúdo detalhado',
-        media: ['https://exemplo.com/capa.png', 'https://exemplo.com/extra.png'],
+        media: [
+          'https://exemplo.com/capa.png',
+          'https://exemplo.com/extra.png',
+        ],
         authorId: 'discord-123',
         author: {
           globalName: 'Autor Post',
@@ -478,7 +480,7 @@ describe('PostagensService', () => {
       const result = await service.getComments(postId, {
         page: 1,
         limit: 10,
-      } as any);
+      });
 
       expect(prisma.comment.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
