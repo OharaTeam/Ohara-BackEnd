@@ -168,7 +168,11 @@ export class PostagensService {
           },
           createdAt: true,
           updatedAt: true,
-          comentarios: true,
+          _count: {
+            select: {
+              comentarios: true,
+            },
+          },
           evento: {
             select: {
               id: true,
@@ -193,7 +197,7 @@ export class PostagensService {
       });
 
       if (!post) {
-        throw new BadRequestException(`Post não encontrado.`);
+        throw new NotFoundException(`Postagem não encontrada.`);
       }
       const formattedPost = {
         ...post,
@@ -205,6 +209,12 @@ export class PostagensService {
 
       return formattedPost;
     } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
       this.logger.warn(`Erro ao obter post: ${error}`);
       throw new InternalServerErrorException(`Erro ao obter post`);
     }
