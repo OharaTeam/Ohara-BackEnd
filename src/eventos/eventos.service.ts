@@ -16,7 +16,7 @@ export interface UserAuthContext {
   id: string;
   discordId: string;
   username: string;
-  roles?: any[];
+  roles?: (string | { name?: string })[];
 }
 
 @Injectable()
@@ -213,7 +213,7 @@ export class EventosService {
    */
   private isDevUser(user: UserAuthContext): boolean {
     return (user.roles || []).some(
-      (role: any) => (typeof role === 'string' ? role : role?.name) === 'Dev',
+      (role) => (typeof role === 'string' ? role : role?.name) === 'Dev',
     );
   }
 
@@ -334,8 +334,10 @@ export class EventosService {
 
     try {
       const dataToUpdate: Prisma.OharaEventosUpdateInput = {};
-      if (dto.nomeEvento !== undefined) dataToUpdate.nomeEvento = dto.nomeEvento;
-      if (dto.tipoEvento !== undefined) dataToUpdate.tipoEvento = dto.tipoEvento;
+      if (dto.nomeEvento !== undefined)
+        dataToUpdate.nomeEvento = dto.nomeEvento;
+      if (dto.tipoEvento !== undefined)
+        dataToUpdate.tipoEvento = dto.tipoEvento;
       if (dto.descricao !== undefined) dataToUpdate.descricao = dto.descricao;
       if (dto.media !== undefined) dataToUpdate.media = dto.media;
       if (dto.dataInicio !== undefined) dataToUpdate.dataInicio = novoInicio;

@@ -341,26 +341,28 @@ describe('EventosService', () => {
 
     it('deve permitir atualização com sucesso quando o requisitante for o autor', async () => {
       prisma.oharaEventos.findUnique.mockResolvedValue(existingEvento);
-      prisma.$transaction.mockImplementation(async (callback) => {
-        return callback({
-          oharaEventos: {
-            update: jest.fn().mockResolvedValue({
-              ...existingEvento,
-              descricao: 'Nova descrição atualizada',
-              author: {
-                id: 'user-1',
-                username: 'autor',
-                globalName: null,
-                avatarUrl: null,
-              },
-              posts: [{ id: 'post-123' }],
-            }),
-          },
-          post: {
-            updateMany: jest.fn().mockResolvedValue({ count: 1 }),
-          },
-        });
-      });
+      prisma.$transaction.mockImplementation(
+        (callback: (tx: any) => Promise<any>) => {
+          return callback({
+            oharaEventos: {
+              update: jest.fn().mockResolvedValue({
+                ...existingEvento,
+                descricao: 'Nova descrição atualizada',
+                author: {
+                  id: 'user-1',
+                  username: 'autor',
+                  globalName: null,
+                  avatarUrl: null,
+                },
+                posts: [{ id: 'post-123' }],
+              }),
+            },
+            post: {
+              updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+            },
+          });
+        },
+      );
 
       const dto: UpdateEventoDto = { descricao: 'Nova descrição atualizada' };
       const result = await service.updateEvento('evento-123', authorUser, dto);
@@ -371,26 +373,28 @@ describe('EventosService', () => {
 
     it('deve permitir atualização com sucesso quando o requisitante NÃO for o autor, mas tiver a role Dev', async () => {
       prisma.oharaEventos.findUnique.mockResolvedValue(existingEvento);
-      prisma.$transaction.mockImplementation(async (callback) => {
-        return callback({
-          oharaEventos: {
-            update: jest.fn().mockResolvedValue({
-              ...existingEvento,
-              descricao: 'Alterado por dev',
-              author: {
-                id: 'user-1',
-                username: 'autor',
-                globalName: null,
-                avatarUrl: null,
-              },
-              posts: [{ id: 'post-123' }],
-            }),
-          },
-          post: {
-            updateMany: jest.fn().mockResolvedValue({ count: 1 }),
-          },
-        });
-      });
+      prisma.$transaction.mockImplementation(
+        (callback: (tx: any) => Promise<any>) => {
+          return callback({
+            oharaEventos: {
+              update: jest.fn().mockResolvedValue({
+                ...existingEvento,
+                descricao: 'Alterado por dev',
+                author: {
+                  id: 'user-1',
+                  username: 'autor',
+                  globalName: null,
+                  avatarUrl: null,
+                },
+                posts: [{ id: 'post-123' }],
+              }),
+            },
+            post: {
+              updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+            },
+          });
+        },
+      );
 
       const dto: UpdateEventoDto = { descricao: 'Alterado por dev' };
       const result = await service.updateEvento('evento-123', devUser, dto);
