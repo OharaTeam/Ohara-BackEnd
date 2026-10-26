@@ -21,8 +21,8 @@
 | **REQ-TEAM-02** | Governança | Criação de `CONTRIBUTING.md` e convenções de Git Flow / Conventional Commits | ✅ Concluído | Fase 2 |
 | **REQ-TEAM-03** | GitHub Templates | Templates de PR e Issues estruturados em `.github/` para bugs, features e tasks | ✅ Concluído | Fase 2 |
 | **REQ-TEAM-04** | Automação Roadmap | Decomposição das fases seguintes em micro-tasks e script/templates prontos para GitHub Issues | ✅ Concluído | Fase 2 |
-| **REQ-POST-04** | Comentários | Criação, listagem e remoção de comentários em posts (`Comment` model) | 🟡 Parcial (Schema pronto) | Fase 3 |
-| **REQ-EVNT-01** | Eventos | CRUD de Eventos Ohara (`OharaEventos` no schema) e vinculação a posts | 🟡 Parcial (Schema pronto) | Fase 3 |
+| **REQ-POST-04** | Comentários | Criação, listagem e remoção de comentários em posts (`Comment` model) | ✅ Concluído | Fase 3 |
+| **REQ-EVNT-01** | Eventos | CRUD de Eventos Ohara (`OharaEventos` no schema) e vinculação a posts | ✅ Concluído | Fase 3 |
 | **REQ-MC-01** | Minecraft / Cobblemon | Endpoints para vincular `ContaMinecraft` ao Membro e consultar `PokemonsCapturados` | 🟡 Parcial (Schema pronto) | Fase 3 |
 | **REQ-TEST-01** | Testes | Cobertura de testes unitários dos Services e Guards | ⏳ Pendente | Fase 4 |
 | **REQ-TEST-02** | Testes | Testes E2E dos fluxos de Auth, Sync de Membros/Cargos e Postagens | ⏳ Pendente | Fase 4 |
