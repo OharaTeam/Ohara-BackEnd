@@ -9,11 +9,13 @@ export class CleanupService {
   private readonly logger = new Logger(CleanupService.name);
   private readonly uploadsDir = path.join(process.cwd(), 'uploads', 'images');
 
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleCron() {
-    this.logger.log('Iniciando rotina de limpeza de arquivos órfãos em /uploads/images...');
+    this.logger.log(
+      'Iniciando rotina de limpeza de arquivos órfãos em /uploads/images...',
+    );
 
     if (!fs.existsSync(this.uploadsDir)) {
       this.logger.log('Diretório de uploads não encontrado, pulando limpeza.');
@@ -33,7 +35,6 @@ export class CleanupService {
 
       // Só avalia arquivos mais velhos que 24 horas
       if (now - stats.mtimeMs > TWENTY_FOUR_HOURS) {
-
         // Verifica se a string do nome do arquivo existe no conteúdo ou mídia de qualquer post.
         // Utiliza queryRaw para maior performance na busca de textos
         const postUsingFile: any[] = await this.prisma.$queryRaw`
@@ -55,6 +56,8 @@ export class CleanupService {
       }
     }
 
-    this.logger.log(`Rotina de limpeza finalizada. ${deletedCount} arquivo(s) excluído(s).`);
+    this.logger.log(
+      `Rotina de limpeza finalizada. ${deletedCount} arquivo(s) excluído(s).`,
+    );
   }
 }

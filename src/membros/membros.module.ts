@@ -7,4 +7,4 @@ import { MembrosCronService } from './membro-cron.service';
   controllers: [MembrosController],
   providers: [MembrosService, MembrosCronService],
 })
-export class MembrosModule { }
+export class MembrosModule {}

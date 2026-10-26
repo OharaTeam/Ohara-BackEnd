@@ -18,9 +18,9 @@ export class PostagensService {
   private readonly logger = new Logger(PostagensService.name);
   constructor(private prisma: PrismaService) {}
 
-  async createPost(createPostDto: CreatePostDto) {
+  async createPost(authorDiscordId: string, createPostDto: CreatePostDto) {
     this.logger.log(
-      `Solicitação de criação de post recebida por ${createPostDto.discordId}`,
+      `Solicitação de criação de post recebida para o autor ${authorDiscordId}`,
     );
     try {
       const postExiste = await this.prisma.post.findUnique({
@@ -33,21 +33,24 @@ export class PostagensService {
         throw new BadRequestException(`Já existe um post com esse titulo.`);
       }
 
-      if (createPostDto.media!.length > 10) {
+      if (createPostDto.media && createPostDto.media.length > 10) {
         throw new BadRequestException(`O post deve ter menos de 10 mídias.`);
       }
 
-      return this.prisma.post.create({
+      return await this.prisma.post.create({
         data: {
           tittle: createPostDto.tittle,
           content: createPostDto.content,
-          authorId: createPostDto.discordId,
+          authorId: authorDiscordId,
           media: createPostDto.media,
           eventoId: createPostDto.eventoId,
         },
       });
     } catch (error) {
-      this.logger.warn(`Erro ao criar post: ${error}`);
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      this.logger.error(`Erro ao criar post: ${error}`);
       throw new InternalServerErrorException(`Erro ao criar post`);
     }
   }

@@ -2,8 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostagensController } from './postagens.controller';
 import { PostagensService } from './postagens.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { CreatePostDto } from './dto/create-post.dto';
 import { QueryFeedDto, FeedTipoFilter } from './dto/query-feed.dto';
 import { QueryCommentDto } from './dto/query-comment.dto';
+import { BadRequestException } from '@nestjs/common';
+import type { Request } from 'express';
 
 describe('PostagensController', () => {
   let controller: PostagensController;
@@ -34,6 +37,73 @@ describe('PostagensController', () => {
 
   it('deve estar definido', () => {
     expect(controller).toBeDefined();
+  });
+
+  describe('createPost', () => {
+    it('deve chamar o service.createPost com o discordId do usuário autenticado e o DTO', async () => {
+      const dto: CreatePostDto = {
+        tittle: 'Novo Post da Comunidade',
+        content: 'Conteúdo do post...',
+        media: ['https://cdn.exemplo.com/foto.png'],
+      };
+      const req = {
+        user: {
+          id: 'user-uuid-123',
+          discordId: 'discord-auth-456',
+          username: 'autor',
+        },
+      };
+      const expectedResult = {
+        id: 'post-uuid-1',
+        tittle: dto.tittle,
+        content: dto.content,
+        authorId: 'discord-auth-456',
+        media: dto.media,
+        eventoId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (service.createPost as jest.Mock).mockResolvedValue(expectedResult);
+
+      const result = await controller.createPost(dto, req);
+
+      expect(service.createPost).toHaveBeenCalledWith('discord-auth-456', dto);
+      expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe('uploadImagens', () => {
+    it('deve retornar URLs públicas para arquivos válidos enviados', () => {
+      const mockFiles = [
+        { filename: 'img1.png' },
+        { filename: 'img2.jpg' },
+      ] as Express.Multer.File[];
+      const mockReq = {
+        protocol: 'http',
+        get: jest.fn().mockReturnValue('localhost:3000'),
+      } as unknown as Request;
+
+      const result = controller.uploadImagens(mockFiles, mockReq);
+
+      expect(result).toEqual({
+        urls: [
+          'http://localhost:3000/uploads/images/img1.png',
+          'http://localhost:3000/uploads/images/img2.jpg',
+        ],
+      });
+    });
+
+    it('deve lançar BadRequestException se nenhum arquivo for enviado', () => {
+      const mockReq = {
+        protocol: 'http',
+        get: jest.fn().mockReturnValue('localhost:3000'),
+      } as unknown as Request;
+
+      expect(() => controller.uploadImagens([], mockReq)).toThrow(
+        BadRequestException,
+      );
+    });
   });
 
   describe('createComment', () => {

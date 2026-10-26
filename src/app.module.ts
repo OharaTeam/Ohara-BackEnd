@@ -25,7 +25,7 @@ import { EventosModule } from './eventos/eventos.module';
     EventosModule,
     ThrottlerModule.forRoot([
       {
-        ttl: 60,
+        ttl: 60000,
         limit: 12,
       },
     ]),

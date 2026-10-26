@@ -5,9 +5,11 @@ import {
   NotFoundException,
   ForbiddenException,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 import { tipoEvento } from '@prisma/client';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { CreatePostDto } from './dto/create-post.dto';
 import { FeedTipoFilter } from './dto/query-feed.dto';
 
 describe('PostagensService', () => {
@@ -17,6 +19,7 @@ describe('PostagensService', () => {
       findUnique: jest.Mock;
       findMany: jest.Mock;
       count: jest.Mock;
+      create: jest.Mock;
     };
     user: {
       findUnique: jest.Mock;
@@ -36,6 +39,7 @@ describe('PostagensService', () => {
         findUnique: jest.fn(),
         findMany: jest.fn(),
         count: jest.fn(),
+        create: jest.fn(),
       },
       user: {
         findUnique: jest.fn(),
@@ -64,6 +68,80 @@ describe('PostagensService', () => {
 
   it('deve estar definido', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('createPost', () => {
+    const authorDiscordId = '123456789012345678';
+    const dto: CreatePostDto = {
+      tittle: 'Título do Post Válido',
+      content: 'Conteúdo detalhado da postagem da comunidade.',
+      media: ['https://cdn.exemplo.com/imagem1.png'],
+    };
+
+    it('deve criar uma postagem com sucesso associando ao autor autenticado', async () => {
+      prisma.post.findUnique.mockResolvedValue(null);
+      const createdPost = {
+        id: 'post-uuid-1',
+        tittle: dto.tittle,
+        content: dto.content,
+        authorId: authorDiscordId,
+        media: dto.media,
+        eventoId: undefined,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      prisma.post.create.mockResolvedValue(createdPost);
+
+      const result = await service.createPost(authorDiscordId, dto);
+
+      expect(prisma.post.findUnique).toHaveBeenCalledWith({
+        where: { tittle: dto.tittle },
+      });
+      expect(prisma.post.create).toHaveBeenCalledWith({
+        data: {
+          tittle: dto.tittle,
+          content: dto.content,
+          authorId: authorDiscordId,
+          media: dto.media,
+          eventoId: undefined,
+        },
+      });
+      expect(result).toEqual(createdPost);
+    });
+
+    it('deve lançar BadRequestException se já existir post com o mesmo título', async () => {
+      prisma.post.findUnique.mockResolvedValue({ id: 'post-existente' });
+
+      await expect(service.createPost(authorDiscordId, dto)).rejects.toThrow(
+        new BadRequestException('Já existe um post com esse titulo.'),
+      );
+      expect(prisma.post.create).not.toHaveBeenCalled();
+    });
+
+    it('deve lançar BadRequestException se o post contiver mais de 10 mídias', async () => {
+      prisma.post.findUnique.mockResolvedValue(null);
+      const dtoComMuitasMidias: CreatePostDto = {
+        ...dto,
+        media: new Array(11).fill('https://cdn.exemplo.com/foto.png'),
+      };
+
+      await expect(
+        service.createPost(authorDiscordId, dtoComMuitasMidias),
+      ).rejects.toThrow(
+        new BadRequestException('O post deve ter menos de 10 mídias.'),
+      );
+      expect(prisma.post.create).not.toHaveBeenCalled();
+    });
+
+    it('deve lançar InternalServerErrorException em falha inesperada no banco', async () => {
+      prisma.post.findUnique.mockRejectedValue(
+        new Error('Erro de conexão ao banco'),
+      );
+
+      await expect(service.createPost(authorDiscordId, dto)).rejects.toThrow(
+        new InternalServerErrorException('Erro ao criar post'),
+      );
+    });
   });
 
   describe('createComment', () => {

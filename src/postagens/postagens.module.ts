@@ -4,7 +4,7 @@ import { PostagensService } from './postagens.service';
 import { CleanupService } from './cleanup.service';
 
 @Module({
-    controllers: [PostagensController],
-    providers: [PostagensService, CleanupService],
+  controllers: [PostagensController],
+  providers: [PostagensService, CleanupService],
 })
-export class PostagensModule { }
+export class PostagensModule {}

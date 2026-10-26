@@ -12,11 +12,13 @@ import {
   UploadedFiles,
   Delete,
   ParseUUIDPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import * as fs from 'fs';
+import type { Request } from 'express';
 import { PostagensService } from './postagens.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -100,15 +102,21 @@ export class PostagensController {
   @ApiBody({ type: CreatePostDto })
   @ApiResponse({ status: 201, description: 'Postagem criada com sucesso.' })
   @ApiResponse({
+    status: 400,
+    description: 'Payload inválido ou postagem já existente com este título.',
+  })
+  @ApiResponse({
     status: 401,
     description: 'Não autorizado: Token JWT ausente ou inválido.',
   })
-  createPost(@Body() createPostDto: CreatePostDto) {
+  createPost(
+    @Body() createPostDto: CreatePostDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
     this.logger.log(
-      `Solicitação de criação de post recebida por ${createPostDto.discordId}`,
+      `Solicitação de criação de post recebida para o autor ${req.user.discordId}`,
     );
-    this.logger.log(`Dados do post: ${createPostDto}`);
-    return this.postagensService.createPost(createPostDto);
+    return this.postagensService.createPost(req.user.discordId, createPostDto);
   }
 
   @Post('upload')
@@ -117,11 +125,12 @@ export class PostagensController {
   @ApiOperation({
     summary: 'Upload de imagens para postagens',
     description:
-      'Permite o envio de até 5 imagens locais e retorna seus links públicos gerados.',
+      'Permite o envio de até 5 imagens locais e retorna seus links públicos gerados. Formatos suportados: JPEG, PNG, WEBP e GIF (máx 5MB por arquivo).',
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Arquivos de imagem para upload (limite de 5 arquivos)',
+    description:
+      'Arquivos de imagem para upload (limite de 5 arquivos de até 5MB cada)',
     schema: {
       type: 'object',
       properties: {
@@ -140,11 +149,49 @@ export class PostagensController {
     description: 'Imagens enviadas com sucesso e URLs retornadas.',
   })
   @ApiResponse({
+    status: 400,
+    description:
+      'Arquivo inválido, tamanho excedido (máximo 5MB) ou formato não suportado.',
+  })
+  @ApiResponse({
     status: 401,
     description: 'Não autorizado: Token JWT ausente ou inválido.',
   })
   @UseInterceptors(
     FilesInterceptor('arquivos', 5, {
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5 MB por arquivo
+        files: 5,
+      },
+      fileFilter: (req, file, cb) => {
+        const allowedMimes = [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'image/gif',
+        ];
+        if (!allowedMimes.includes(file.mimetype)) {
+          return cb(
+            new BadRequestException(
+              'Tipo de arquivo não permitido. Apenas imagens JPEG, PNG, WEBP e GIF são aceitas.',
+            ),
+            false,
+          );
+        }
+
+        const ext = extname(file.originalname).toLowerCase();
+        const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+        if (!allowedExtensions.includes(ext)) {
+          return cb(
+            new BadRequestException(
+              'Extensão de arquivo inválida para o formato de imagem informado.',
+            ),
+            false,
+          );
+        }
+
+        cb(null, true);
+      },
       storage: diskStorage({
         destination: (req, file, cb) => {
           const uploadPath = './uploads/images';
@@ -154,17 +201,26 @@ export class PostagensController {
           cb(null, uploadPath);
         },
         filename: (req, file, cb) => {
+          const ext = extname(file.originalname).toLowerCase();
+          const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+          const safeExt = allowedExtensions.includes(ext) ? ext : '.png';
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
-          cb(null, uniqueSuffix + extname(file.originalname));
+          cb(null, `${uniqueSuffix}${safeExt}`);
         },
       }),
     }),
   )
   uploadImagens(
     @UploadedFiles() files: Express.Multer.File[],
-    @Req() req: any,
+    @Req() req: Request,
   ) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException(
+        'Nenhum arquivo de imagem válido foi enviado.',
+      );
+    }
+
     let baseUrl: string;
 
     // Em produção, usa a variável APP_URL. Em dev, usa o host da requisição.

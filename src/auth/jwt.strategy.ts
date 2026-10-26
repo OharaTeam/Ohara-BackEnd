@@ -7,7 +7,6 @@ import { Request } from 'express';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   private readonly logger = new Logger(JwtStrategy.name);
   constructor() {
-
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET nao esta definida nas variaveis de ambiente');
     }
@@ -21,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             token = req.cookies['jwt'];
           }
           return token || ExtractJwt.fromAuthHeaderAsBearerToken()(req);
-        }
+        },
       ]),
       ignoreExpiration: false, // Se o token venceu, nega o acesso
       secretOrKey: process.env.JWT_SECRET, // A mesma chave do .env
@@ -31,7 +30,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     // O que retornarmos aqui será inserido automaticamente em 'req.user'
     // nas rotas protegidas
-    this.logger.log(payload);
-    return { id: payload.sub, discordId: payload.discordId, username: payload.username, roles: payload.roles };
+    return {
+      id: payload.sub,
+      discordId: payload.discordId,
+      username: payload.username,
+      roles: payload.roles,
+    };
   }
 }

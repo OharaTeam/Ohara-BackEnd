@@ -7,8 +7,8 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   constructor(
     private prisma: PrismaService,
-    private jwtService: JwtService
-  ) { }
+    private jwtService: JwtService,
+  ) {}
 
   async validateDiscordUser(profile: any) {
     const { id, email } = profile;
@@ -23,10 +23,14 @@ export class AuthService {
         data: { email: email },
       });
 
-      this.logger.log(`Usuário existente atualizado: ${updatedUser.username} (${updatedUser.discordId})`);
+      this.logger.log(
+        `Usuário existente atualizado: ${updatedUser.username} (${updatedUser.discordId})`,
+      );
       return updatedUser;
     }
-    this.logger.log(`Usuário não encontrado no banco, Discord ID: ${id}, Login cancelado.`);
+    this.logger.log(
+      `Usuário não encontrado no banco, Discord ID: ${id}, Login cancelado.`,
+    );
     return null;
   }
 
@@ -36,10 +40,10 @@ export class AuthService {
       select: {
         roles: {
           select: {
-            name: true
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
     });
 
     const payload = {
@@ -51,18 +55,20 @@ export class AuthService {
       avatarUrl: user.avatarUrl,
       serverAvatarUrl: user.serverAvatarUrl,
       serverNickName: user.serverNickName,
-      roles: userWithRoles?.roles.map(role => role.name) || []
+      roles: userWithRoles?.roles.map((role) => role.name) || [],
     };
-    this.logger.log('Token gerado para o usuário:', payload);
+    this.logger.log(
+      `Token gerado com sucesso para o usuário ${user.username} (${user.discordId})`,
+    );
     return {
       access_token: this.jwtService.sign(payload),
-    }
+    };
   }
 
   async generateTemporaryCode(user: any) {
     const payload = {
       sub: user.id,
-      type: 'exchange_code'
+      type: 'exchange_code',
     };
     // Token super curto válido por apenas 1 minuto
     return this.jwtService.sign(payload, { expiresIn: '1m' });
@@ -76,7 +82,7 @@ export class AuthService {
       }
 
       const user = await this.prisma.user.findUnique({
-        where: { id: payload.sub }
+        where: { id: payload.sub },
       });
 
       if (!user) {
@@ -85,7 +91,10 @@ export class AuthService {
 
       return this.login(user); // retorna o JWT final e permanente
     } catch (error) {
-      this.logger.error('Falha ao trocar código por token. Código inválido ou expirado.', error);
+      this.logger.error(
+        'Falha ao trocar código por token. Código inválido ou expirado.',
+        error,
+      );
       throw new Error('Código inválido ou expirado');
     }
   }
