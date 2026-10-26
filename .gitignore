@@ -59,13 +59,11 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
 
-# GSD Local Session State (handoffs e checkpoints locais)
+# GSD e Planejamento Local (nao versionar artefatos de planejamento/sessoes)
+.planning/
 .continue-here.md
 *.continue-here.md
 HANDOFF.json
-.planning/**/HANDOFF.json
-.planning/**/.continue-here.md
-.planning/**/*-CHECKPOINT.json
 
 # Scripts de automacao locais (nao versionar scripts de issues/sincronizacao)
 /scripts
