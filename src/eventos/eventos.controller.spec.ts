@@ -105,20 +105,16 @@ describe('EventosController', () => {
   describe('getEventoById', () => {
     it('deve chamar service.getEventoById com o ID e retornar o resultado', async () => {
       const mockEvento = {
-        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        id: 'm8L9p2Xq4M',
         nomeEvento: 'Torneio Especial',
         postId: 'post-1',
       };
 
       service.getEventoById.mockResolvedValue(mockEvento);
 
-      const result = await controller.getEventoById(
-        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-      );
+      const result = await controller.getEventoById('m8L9p2Xq4M');
 
-      expect(service.getEventoById).toHaveBeenCalledWith(
-        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-      );
+      expect(service.getEventoById).toHaveBeenCalledWith('m8L9p2Xq4M');
       expect(result).toEqual(mockEvento);
     });
   });
@@ -139,20 +135,16 @@ describe('EventosController', () => {
       };
 
       const mockResponse = {
-        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        id: 'm8L9p2Xq4M',
         descricao: 'Nova descrição',
       };
 
       service.updateEvento.mockResolvedValue(mockResponse);
 
-      const result = await controller.updateEvento(
-        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-        dto,
-        req,
-      );
+      const result = await controller.updateEvento('m8L9p2Xq4M', dto, req);
 
       expect(service.updateEvento).toHaveBeenCalledWith(
-        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        'm8L9p2Xq4M',
         req.user,
         dto,
       );
@@ -174,15 +166,9 @@ describe('EventosController', () => {
       const mockResponse = { message: 'Evento excluído com sucesso.' };
       service.deleteEvento.mockResolvedValue(mockResponse);
 
-      const result = await controller.deleteEvento(
-        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-        req,
-      );
+      const result = await controller.deleteEvento('m8L9p2Xq4M', req);
 
-      expect(service.deleteEvento).toHaveBeenCalledWith(
-        'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-        req.user,
-      );
+      expect(service.deleteEvento).toHaveBeenCalledWith('m8L9p2Xq4M', req.user);
       expect(result).toEqual(mockResponse);
     });
   });

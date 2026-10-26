@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { generateNanoId } from '../common/utils/nanoid.util';
 import { CreateEventoDto } from './dto/create-evento.dto';
 import { UpdateEventoDto } from './dto/update-evento.dto';
 import { QueryEventoDto } from './dto/query-evento.dto';
@@ -84,6 +85,7 @@ export class EventosService {
       const resultado = await this.prisma.$transaction(async (tx) => {
         const evento = await tx.oharaEventos.create({
           data: {
+            id: generateNanoId(),
             nomeEvento: dto.nomeEvento,
             tipoEvento: dto.tipoEvento,
             descricao: dto.descricao,
@@ -96,6 +98,7 @@ export class EventosService {
 
         const post = await tx.post.create({
           data: {
+            id: generateNanoId(),
             tittle: dto.nomeEvento,
             content: dto.descricao,
             media: dto.media ?? [],

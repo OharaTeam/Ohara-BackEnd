@@ -227,8 +227,8 @@ describe('PostagensController', () => {
 
   describe('deleteComment', () => {
     it('deve chamar o service.deleteComment com postId, commentId e req.user.id e retornar mensagem de sucesso', async () => {
-      const postId = '123e4567-e89b-12d3-a456-426614174000';
-      const commentId = '123e4567-e89b-12d3-a456-426614174999';
+      const postId = 'xhFrIREl9K';
+      const commentId = 'cK8mP9qLx2';
       const req = {
         user: {
           id: 'user-uuid-789',

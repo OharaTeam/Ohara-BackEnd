@@ -99,6 +99,7 @@ describe('PostagensService', () => {
       });
       expect(prisma.post.create).toHaveBeenCalledWith({
         data: {
+          id: expect.stringMatching(/^[A-Za-z0-9_-]{10}$/),
           tittle: dto.tittle,
           content: dto.content,
           authorId: authorDiscordId,
@@ -216,6 +217,7 @@ describe('PostagensService', () => {
 
       expect(prisma.comment.create).toHaveBeenCalledWith({
         data: {
+          id: expect.stringMatching(/^[A-Za-z0-9_-]{10}$/),
           content: dto.content,
           media: dto.media,
           postId: mockPost.id,

@@ -12,6 +12,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { QueryFeedDto, FeedTipoFilter } from './dto/query-feed.dto';
 import { QueryCommentDto } from './dto/query-comment.dto';
+import { generateNanoId } from '../common/utils/nanoid.util';
 
 @Injectable()
 export class PostagensService {
@@ -39,6 +40,7 @@ export class PostagensService {
 
       return await this.prisma.post.create({
         data: {
+          id: generateNanoId(),
           tittle: createPostDto.tittle,
           content: createPostDto.content,
           authorId: authorDiscordId,
@@ -252,6 +254,7 @@ export class PostagensService {
 
       const comment = await this.prisma.comment.create({
         data: {
+          id: generateNanoId(),
           content: createCommentDto.content,
           media: createCommentDto.media,
           postId: post.id,

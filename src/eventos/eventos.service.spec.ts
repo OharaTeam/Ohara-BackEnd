@@ -178,15 +178,18 @@ describe('EventosService', () => {
       prisma.oharaEventos.findUnique.mockResolvedValue(null);
       prisma.post.findUnique.mockResolvedValue(null);
 
+      const createEventoMock = jest.fn().mockResolvedValue(mockCreatedEvento);
+      const createPostMock = jest.fn().mockResolvedValue(mockCreatedPost);
+
       // Simula a execução da callback da $transaction
       prisma.$transaction.mockImplementation(
         (callback: (tx: unknown) => Promise<unknown>) => {
           const tx = {
             oharaEventos: {
-              create: jest.fn().mockResolvedValue(mockCreatedEvento),
+              create: createEventoMock,
             },
             post: {
-              create: jest.fn().mockResolvedValue(mockCreatedPost),
+              create: createPostMock,
             },
           };
           return callback(tx);
@@ -196,6 +199,20 @@ describe('EventosService', () => {
       const result = await service.createEvento(discordId, dto);
 
       expect(prisma.$transaction).toHaveBeenCalled();
+      expect(createEventoMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            id: expect.stringMatching(/^[A-Za-z0-9_-]{10}$/),
+          }),
+        }),
+      );
+      expect(createPostMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            id: expect.stringMatching(/^[A-Za-z0-9_-]{10}$/),
+          }),
+        }),
+      );
       expect(result.id).toBe(mockCreatedEvento.id);
       expect(result.postId).toBe(mockCreatedPost.id);
       expect(result.author.username).toBe(mockUser.username);

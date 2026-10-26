@@ -10,8 +10,8 @@ import {
   Req,
   UseGuards,
   Logger,
-  ParseUUIDPipe,
 } from '@nestjs/common';
+import { ParseNanoIdPipe } from '../common/pipes/parse-nanoid.pipe';
 import {
   ApiTags,
   ApiOperation,
@@ -110,12 +110,12 @@ export class EventosController {
   @ApiOperation({
     summary: 'Obter detalhes de um evento',
     description:
-      'Retorna as informações completas de um evento pelo seu ID único (UUID), incluindo autor e postagem vinculada.',
+      'Retorna as informações completas de um evento pelo seu ID único (NanoID de 10 caracteres), incluindo autor e postagem vinculada.',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID do evento (UUID)',
-    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    description: 'ID do evento (NanoID de 10 caracteres)',
+    example: 'm8L9p2Xq4M',
   })
   @ApiResponse({
     status: 200,
@@ -124,13 +124,13 @@ export class EventosController {
   })
   @ApiResponse({
     status: 400,
-    description: 'ID inválido (esperado UUID válido).',
+    description: 'ID inválido (esperado NanoID de 10 caracteres alfanuméricos).',
   })
   @ApiResponse({
     status: 404,
     description: 'Evento não encontrado.',
   })
-  getEventoById(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+  getEventoById(@Param('id', ParseNanoIdPipe) id: string) {
     this.logger.log(`Recebida solicitação de detalhes do evento ID: ${id}`);
     return this.eventosService.getEventoById(id);
   }
@@ -145,8 +145,8 @@ export class EventosController {
   })
   @ApiParam({
     name: 'id',
-    description: 'ID do evento (UUID)',
-    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    description: 'ID do evento (NanoID de 10 caracteres)',
+    example: 'm8L9p2Xq4M',
   })
   @ApiBody({ type: UpdateEventoDto })
   @ApiResponse({
@@ -157,7 +157,7 @@ export class EventosController {
   @ApiResponse({
     status: 400,
     description:
-      'Payload inválido, conflito de nome ou data de encerramento anterior ao início.',
+      'Payload inválido, conflito de nome, data de encerramento anterior ao início ou ID inválido.',
   })
   @ApiResponse({
     status: 401,
@@ -173,7 +173,7 @@ export class EventosController {
     description: 'Evento não encontrado.',
   })
   updateEvento(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('id', ParseNanoIdPipe) id: string,
     @Body() updateEventoDto: UpdateEventoDto,
     @Req() req: AuthenticatedRequest,
   ) {
@@ -193,8 +193,8 @@ export class EventosController {
   })
   @ApiParam({
     name: 'id',
-    description: 'ID do evento (UUID)',
-    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    description: 'ID do evento (NanoID de 10 caracteres)',
+    example: 'm8L9p2Xq4M',
   })
   @ApiResponse({
     status: 200,
@@ -202,7 +202,7 @@ export class EventosController {
   })
   @ApiResponse({
     status: 400,
-    description: 'ID inválido (esperado UUID válido).',
+    description: 'ID inválido (esperado NanoID de 10 caracteres alfanuméricos).',
   })
   @ApiResponse({
     status: 401,
@@ -218,7 +218,7 @@ export class EventosController {
     description: 'Evento não encontrado.',
   })
   deleteEvento(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('id', ParseNanoIdPipe) id: string,
     @Req() req: AuthenticatedRequest,
   ) {
     this.logger.log(

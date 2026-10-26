@@ -117,7 +117,7 @@ model Connection {
 }
 
 model OharaEventos {
-  id               String     @id @default(uuid())
+  id               String     @id // Gerado via generateNanoId() (10 caracteres URL-safe)
   nomeEvento       String     @unique
   tipoEvento       tipoEvento
   descricao        String     @db.Text
@@ -165,7 +165,7 @@ model ContaMinecraft {
 }
 
 model Post {
-  id      String @id @default(uuid())
+  id      String @id // Gerado via generateNanoId() (10 caracteres URL-safe)
   tittle  String @unique
   content String @db.Text // Texto rico gerado pelo editor
   media   Json? // Arrays de links para imagens/gifs
@@ -185,7 +185,7 @@ model Post {
 }
 
 model Comment {
-  id      String @id @default(uuid())
+  id      String @id // Gerado via generateNanoId() (10 caracteres URL-safe)
   content String @db.Text
   media   Json? // Imagens ou gifs anexados ao comentário
 

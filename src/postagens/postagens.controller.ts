@@ -11,9 +11,9 @@ import {
   UseInterceptors,
   UploadedFiles,
   Delete,
-  ParseUUIDPipe,
   BadRequestException,
 } from '@nestjs/common';
+import { ParseNanoIdPipe } from '../common/pipes/parse-nanoid.pipe';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -80,13 +80,17 @@ export class PostagensController {
   })
   @ApiParam({
     name: 'id',
-    description: 'ID (UUID) da postagem',
+    description: 'ID (NanoID de 10 caracteres) da postagem',
     required: true,
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: 'xhFrIREl9K',
   })
   @ApiResponse({ status: 200, description: 'Postagem encontrada com sucesso.' })
+  @ApiResponse({
+    status: 400,
+    description: 'ID inválido (esperado NanoID de 10 caracteres alfanuméricos).',
+  })
   @ApiResponse({ status: 404, description: 'Postagem não encontrada.' })
-  getPost(@Param('id') id: string) {
+  getPost(@Param('id', ParseNanoIdPipe) id: string) {
     this.logger.log(`Solicitada exibição do post: ${id}`);
     return this.postagensService.getPost(id);
   }
@@ -244,17 +248,20 @@ export class PostagensController {
   @ApiOperation({ summary: 'Adicionar um comentário a uma postagem' })
   @ApiParam({
     name: 'id',
-    description: 'ID da postagem',
+    description: 'ID (NanoID de 10 caracteres) da postagem',
     required: true,
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: 'xhFrIREl9K',
   })
   @ApiBody({ type: CreateCommentDto })
   @ApiResponse({ status: 201, description: 'Comentário criado com sucesso' })
-  @ApiResponse({ status: 400, description: 'Payload inválido' })
+  @ApiResponse({
+    status: 400,
+    description: 'Payload inválido ou ID inválido (esperado NanoID de 10 caracteres).',
+  })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   @ApiResponse({ status: 404, description: 'Postagem não encontrada' })
   createComment(
-    @Param('id') id: string,
+    @Param('id', ParseNanoIdPipe) id: string,
     @Body() createCommentDto: CreateCommentDto,
     @Req() req: AuthenticatedRequest,
   ) {
@@ -276,9 +283,9 @@ export class PostagensController {
   })
   @ApiParam({
     name: 'id',
-    description: 'ID (UUID) da postagem',
+    description: 'ID (NanoID de 10 caracteres) da postagem',
     required: true,
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: 'xhFrIREl9K',
   })
   @ApiResponse({
     status: 200,
@@ -287,13 +294,13 @@ export class PostagensController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Parâmetros de paginação inválidos.',
+    description: 'Parâmetros de paginação inválidos ou ID inválido (esperado NanoID de 10 caracteres).',
   })
   @ApiResponse({
     status: 404,
     description: 'Postagem não encontrada.',
   })
-  getComments(@Param('id') id: string, @Query() query: QueryCommentDto) {
+  getComments(@Param('id', ParseNanoIdPipe) id: string, @Query() query: QueryCommentDto) {
     this.logger.log(
       `Solicitação de comentários do post ${id}: página ${query.page || 1}, limite ${query.limit || 5}, ordem ${query.order || 'asc'}`,
     );
@@ -305,27 +312,27 @@ export class PostagensController {
   @ApiOperation({ summary: 'Excluir um comentário de uma postagem' })
   @ApiParam({
     name: 'id',
-    description: 'ID (UUID) da postagem',
+    description: 'ID (NanoID de 10 caracteres) da postagem',
     required: true,
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: 'xhFrIREl9K',
   })
   @ApiParam({
     name: 'commentId',
-    description: 'ID (UUID) do comentário',
+    description: 'ID (NanoID de 10 caracteres) do comentário',
     required: true,
-    example: '123e4567-e89b-12d3-a456-426614174999',
+    example: 'cK8mP9qLx2',
   })
   @ApiResponse({ status: 200, description: 'Comentário excluído' })
   @ApiResponse({
     status: 400,
-    description: 'ID inválido (esperado UUID válido).',
+    description: 'ID inválido (esperado NanoID de 10 caracteres alfanuméricos).',
   })
   @ApiResponse({ status: 401, description: 'Não autenticado' })
   @ApiResponse({ status: 403, description: 'Sem permissão para excluir' })
   @ApiResponse({ status: 404, description: 'Comentário não encontrado' })
   deleteComment(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Param('commentId', new ParseUUIDPipe({ version: '4' })) commentId: string,
+    @Param('id', ParseNanoIdPipe) id: string,
+    @Param('commentId', ParseNanoIdPipe) commentId: string,
     @Req() req: AuthenticatedRequest,
   ) {
     this.logger.log(
